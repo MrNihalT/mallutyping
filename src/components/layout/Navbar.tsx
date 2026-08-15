@@ -38,13 +38,13 @@ export default function Navbar({ user }: { user: NavbarUser | null }) {
 
             <div className="flex flex-wrap gap-3">
                 {user ? (
-                    <Link
+                    <a
                         href="/auth/logout"
                         className="flex items-center gap-2 rounded-full border-2 border-black bg-white px-5 py-3 shadow-[3px_3px_0px_black] active:translate-x-1 active:translate-y-1 active:shadow-none"
                     >
                         <IconLogout2 size={20} />
                         Logout
-                    </Link>
+                    </a>
                 ) : (
                     <>
                         <Link

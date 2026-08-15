@@ -2,7 +2,16 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { IconCheck, IconLock, IconPlayerPlay } from "@tabler/icons-react";
+import {
+    IconCheck,
+    IconLock,
+    IconPlayerPlay,
+    IconStar,
+    IconKeyboard,
+    IconFlame,
+    IconBarbell,
+    IconTrophy,
+} from "@tabler/icons-react";
 import { trainerLessons } from "@/lib/trainer-lessons";
 
 type RemoteProgressRow = {
@@ -133,7 +142,7 @@ export default function LearningExperience() {
                         </div>
                     </div>
 
-                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
                         {lessons.map((lesson) => {
                             const lessonIndex = trainerLessons.findIndex(
                                 (item) => item.id === lesson.id,
@@ -141,61 +150,93 @@ export default function LearningExperience() {
                             const completed = completedLessonIds.includes(lesson.id);
                             const locked = lessonIndex > unlockedIndex;
 
-                            return (
-                                <div
-                                    key={lesson.id}
-                                    className={`rounded-[1.8rem] border-[3px] border-black bg-white shadow-[5px_5px_0px_black] ${
-                                        locked ? "opacity-55" : ""
-                                    }`}
-                                >
-                                    <div className="p-4">
-                                        <div className="flex items-start justify-between gap-3">
-                                            <div>
-                                                <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-                                                    Lesson {lesson.id}
-                                                </p>
-                                                <h4 className="mt-1 text-2xl font-black text-slate-900">
-                                                    {lesson.title}
-                                                </h4>
-                                            </div>
-                                            {completed ? (
-                                                <span className="rounded-full bg-[#c7f43e] p-2">
-                                                    <IconCheck size={18} />
-                                                </span>
-                                            ) : locked ? (
-                                                <span className="rounded-full bg-slate-100 p-2 text-slate-400">
-                                                    <IconLock size={18} />
-                                                </span>
-                                            ) : (
-                                                <span className="rounded-full bg-[#eaf9fc] p-2 text-slate-700">
-                                                    <IconPlayerPlay size={18} />
-                                                </span>
-                                            )}
-                                        </div>
+                            // Determine appropriate icon and colored background for each card
+                            const title = lesson.title || "";
+                            let IconComponent = IconKeyboard;
+                            let iconColorClass = "text-sky-600";
 
-                                        <p className="font-malayalam mt-5 text-3xl font-semibold text-[#7084a8]">
-                                            {lesson.preview}
-                                        </p>
-                                        <p className="mt-3 min-h-16 text-sm font-medium text-slate-600">
-                                            {lesson.summary}
-                                        </p>
-                                    </div>
+                            if (title.includes("പരിശീലനം") || title.includes("പ്രാക്ടീസ്")) {
+                                IconComponent = IconBarbell;
+                                iconColorClass = "text-amber-600";
+                            } else if (title.includes("പരീക്ഷ") || title.includes("പരീക്ഷണം")) {
+                                IconComponent = IconTrophy;
+                                iconColorClass = "text-emerald-600";
+                            } else if (title.includes("വേഗത") || title.includes("ഒഴുക്ക്")) {
+                                IconComponent = IconFlame;
+                                iconColorClass = "text-rose-600";
+                            }
 
-                                    <div className="border-t border-slate-200 px-4 py-4">
-                                        {locked ? (
-                                            <div className="rounded-full border-2 border-black bg-slate-100 px-4 py-3 text-center text-sm font-black text-slate-500">
-                                                Complete previous lesson
-                                            </div>
+                            if (locked) {
+                                iconColorClass = "text-slate-400";
+                            }
+
+                            const cardContent = (
+                                <div className="p-3 flex flex-col h-full items-center justify-between gap-1">
+                                    {/* Top line with Lesson ID and Lock/Check */}
+                                    <div className="w-full flex items-center justify-between">
+                                        <span className={`text-xs font-black ${locked ? 'text-slate-500' : 'text-slate-800'}`}>
+                                            {lesson.id}
+                                        </span>
+                                        {completed ? (
+                                            <span className="text-[#83c60a]">
+                                                <IconCheck size={16} stroke={3} />
+                                            </span>
+                                        ) : locked ? (
+                                            <span className="text-slate-600 bg-slate-200/65 p-0.5 rounded-full flex items-center justify-center">
+                                                <IconLock size={14} />
+                                            </span>
                                         ) : (
-                                            <Link
-                                                href={`/lesson/${lesson.id}`}
-                                                className="block rounded-full border-[3px] border-black bg-[#c7f43e] px-4 py-3 text-center text-sm font-black text-slate-900 shadow-[3px_3px_0px_black]"
-                                            >
-                                                {completed ? "Practice again" : "Start lesson"}
-                                            </Link>
+                                            <span className="text-sky-500 animate-pulse">
+                                                <IconPlayerPlay size={12} fill="currentColor" />
+                                            </span>
                                         )}
                                     </div>
+
+                                    {/* Middle Icon and Stars */}
+                                    <div className="flex flex-col items-center gap-1.5 my-1">
+                                        <div className={iconColorClass}>
+                                            <IconComponent size={34} stroke={2.5} />
+                                        </div>
+                                        <div className="flex items-center gap-0.5">
+                                            {[...Array(5)].map((_, i) => (
+                                                <IconStar
+                                                    key={i}
+                                                    size={10}
+                                                    fill={completed ? "#f59e0b" : "none"}
+                                                    className={completed ? "text-[#f59e0b]" : "text-slate-200"}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Bottom Title */}
+                                    <div className="w-full">
+                                        <p className={`font-malayalam font-bold text-[10px] sm:text-xs leading-tight truncate text-center ${locked ? 'text-slate-400' : 'text-slate-700'}`} title={lesson.title}>
+                                            {lesson.title}
+                                        </p>
+                                    </div>
                                 </div>
+                            );
+
+                            if (locked) {
+                                return (
+                                    <div
+                                        key={lesson.id}
+                                        className="border-[2px] border-slate-300 bg-slate-50/50 rounded-[1.2rem] aspect-square flex flex-col justify-between cursor-not-allowed select-none"
+                                    >
+                                        {cardContent}
+                                    </div>
+                                );
+                            }
+
+                            return (
+                                <Link
+                                    key={lesson.id}
+                                    href={`/lesson/${lesson.id}`}
+                                    className="border-[3px] border-black bg-white rounded-[1.2rem] shadow-[4px_4px_0px_black] hover:shadow-[6px_6px_0px_black] hover:-translate-y-1 transition-all duration-200 aspect-square flex flex-col justify-between"
+                                >
+                                    {cardContent}
+                                </Link>
                             );
                         })}
                     </div>

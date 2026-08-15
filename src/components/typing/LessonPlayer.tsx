@@ -179,89 +179,36 @@ export default function LessonPlayer({ lessonId }: { lessonId: number }) {
     }
 
     return (
-        <div className="flex h-[calc(100vh-7rem)] min-h-[720px] flex-col gap-4 lg:flex-row">
-            <aside className="flex w-full shrink-0 flex-col rounded-[2.4rem] border-[3px] border-black bg-white/90 p-4 shadow-[8px_8px_0px_black] lg:w-[310px]">
-                <div className="rounded-[1.8rem] border-[3px] border-black bg-[#edf9fb] p-4 shadow-[4px_4px_0px_black]">
-                    <p className="text-sm font-black text-slate-700">{progressPercent}% progress</p>
-                    <div className="mt-3 h-3 overflow-hidden rounded-full bg-white">
-                        <div
-                            className="h-full rounded-full bg-[#c7f43e]"
-                            style={{ width: `${progressPercent}%` }}
-                        />
-                    </div>
-                    <p className="mt-3 text-sm font-medium text-slate-600">{syncMessage}</p>
+        <div className="flex flex-1 min-h-0 flex-col gap-4">
+            {isHydrating ? (
+                <div className="flex h-full items-center justify-center rounded-[2.4rem] border-[3px] border-black bg-[#dff6fb] p-6 shadow-[8px_8px_0px_black]">
+                    <p className="text-lg font-black text-slate-700">Loading lesson...</p>
                 </div>
-
-                <div className="mt-4 rounded-[1.8rem] border-[3px] border-black bg-white p-4 shadow-[4px_4px_0px_black]">
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">
-                        Current Lesson
+            ) : isLocked ? (
+                <div className="flex h-full flex-col items-center justify-center rounded-[2.4rem] border-[3px] border-black bg-[#dff6fb] p-6 text-center shadow-[8px_8px_0px_black]">
+                    <p className="text-2xl font-black text-slate-900">
+                        Complete the previous lesson first.
                     </p>
-                    <h2 className="mt-2 text-3xl font-black text-slate-900">{lesson.title}</h2>
-                    <p className="font-malayalam mt-2 text-2xl font-semibold text-[#7084a8]">
-                        {lesson.preview}
-                    </p>
-                    <p className="mt-3 text-sm font-medium text-slate-600">{lesson.summary}</p>
+                    <Link
+                        href="/"
+                        className="mt-5 rounded-full border-[3px] border-black bg-[#c7f43e] px-6 py-3 text-sm font-black text-slate-900 shadow-[3px_3px_0px_black]"
+                    >
+                        Open lesson map
+                    </Link>
                 </div>
-
-                <div className="mt-4 rounded-[1.8rem] border-[3px] border-black bg-white p-4 shadow-[4px_4px_0px_black]">
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">
-                        Steps
-                    </p>
-                    <div className="mt-3 space-y-2">
-                        {lesson.stages.map((stage, index) => (
-                            <div
-                                key={stage.id}
-                                className={`rounded-2xl border-2 border-black px-4 py-3 text-sm font-bold ${
-                                    index === currentStageIndex
-                                        ? "bg-[#c7f43e] text-slate-900"
-                                        : "bg-white text-slate-600"
-                                }`}
-                            >
-                                {stage.title}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <Link
-                    href="/"
-                    className="mt-auto rounded-full border-[3px] border-black bg-white px-4 py-3 text-center text-sm font-black text-slate-900 shadow-[3px_3px_0px_black]"
-                >
-                    Back to lesson map
-                </Link>
-            </aside>
-
-            <div className="min-h-0 flex-1">
-                {isHydrating ? (
-                    <div className="flex h-full items-center justify-center rounded-[2.4rem] border-[3px] border-black bg-[#dff6fb] p-6 shadow-[8px_8px_0px_black]">
-                        <p className="text-lg font-black text-slate-700">Loading lesson...</p>
-                    </div>
-                ) : isLocked ? (
-                    <div className="flex h-full flex-col items-center justify-center rounded-[2.4rem] border-[3px] border-black bg-[#dff6fb] p-6 text-center shadow-[8px_8px_0px_black]">
-                        <p className="text-2xl font-black text-slate-900">
-                            Complete the previous lesson first.
-                        </p>
-                        <Link
-                            href="/"
-                            className="mt-5 rounded-full border-[3px] border-black bg-[#c7f43e] px-6 py-3 text-sm font-black text-slate-900 shadow-[3px_3px_0px_black]"
-                        >
-                            Open lesson map
-                        </Link>
-                    </div>
-                ) : (
-                    <TypingDemo
-                        key={`${lesson.id}-${currentStage.id}`}
-                        lesson={lesson}
-                        lessonIndex={lessonIndex}
-                        totalLessons={trainerLessons.length}
-                        stage={currentStage}
-                        stageIndex={currentStageIndex}
-                        totalStages={lesson.stages.length}
-                        soundEnabled={soundEnabled}
-                        onStagePass={handleStagePass}
-                    />
-                )}
-            </div>
+            ) : (
+                <TypingDemo
+                    key={`${lesson.id}-${currentStage.id}`}
+                    lesson={lesson}
+                    lessonIndex={lessonIndex}
+                    totalLessons={trainerLessons.length}
+                    stage={currentStage}
+                    stageIndex={currentStageIndex}
+                    totalStages={lesson.stages.length}
+                    soundEnabled={soundEnabled}
+                    onStagePass={handleStagePass}
+                />
+            )}
         </div>
     );
 }

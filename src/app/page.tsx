@@ -1,9 +1,13 @@
-import Image from "next/image";
+import PublicHeader from "@/components/layout/PublicHeader";
+import LearningExperience from "@/components/typing/LearningExperience";
 
-export default function Home() {
+export default function HomePage() {
     return (
-        <>
-            <h3>hi</h3>
-        </>
+        <div className="sky-wash paper-grid min-h-screen p-4">
+            <div className="mx-auto flex max-w-[1500px] flex-col gap-4">
+                <PublicHeader />
+                <LearningExperience />
+            </div>
+        </div>
     );
 }

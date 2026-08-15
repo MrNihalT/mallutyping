@@ -1,0 +1,122 @@
+[
+    {
+        "id": "lesson-01",
+        "slug": "vowel-signs-upper-row",
+        "title": "Vowel Signs on the Top Row",
+        "level": "beginner",
+        "description": "Learn the top-row vowel signs and get comfortable with rhythm before moving to full words.",
+        "goal": "Practice vowel signs and long-vowel combinations without rushing.",
+        "focusKeys": ["Q", "W", "E", "R", "T"],
+        "estimatedMinutes": 8,
+        "words": ["കൗ", "കൈ", "കാ", "കീ", "കൂ", "പൗ", "മൈ", "താ", "നീ", "വൂ"],
+        "sentences": [
+            "കൈ കൂടി കാ കീ കൂ എഴുതുക",
+            "കൗ കൈ കാ കീ കൂ വീണ്ടും പരിശീലിക്കുക"
+        ]
+    },
+    {
+        "id": "lesson-02",
+        "slug": "middle-row-vowels-and-virama",
+        "title": "Middle Row Vowels and Virama",
+        "level": "beginner",
+        "description": "Build control with ോ േ ് ി ു and understand how the virama changes consonants.",
+        "goal": "Type short vowel combinations and stop cleanly on the virama key.",
+        "focusKeys": ["A", "S", "D", "F", "G"],
+        "estimatedMinutes": 10,
+        "words": ["കോ", "മേ", "അ", "കി", "കു", "പേര്", "വീട്", "തീരം", "കഥ", "നില"],
+        "sentences": [
+            "കഥ ഇവിടെ തീരം വരെ പോകും",
+            "പേര് കീറി എഴുതാതെ നേരെ ടൈപ്പ് ചെയ്യുക"
+        ]
+    },
+    {
+        "id": "lesson-03",
+        "slug": "core-consonants-right-hand",
+        "title": "Right-Hand Core Consonants",
+        "level": "beginner",
+        "description": "Train the frequent consonants on the right side of the keyboard for stable word formation.",
+        "goal": "Combine consonants with earlier vowel signs into readable Malayalam words.",
+        "focusKeys": ["Y", "U", "I", "O", "P", "H", "J", "K", "L"],
+        "estimatedMinutes": 12,
+        "words": ["ബലം", "ഹരി", "ഗതി", "ദിനം", "ജലം", "പാലം", "രാഗം", "കഥ", "തരം", "ഭൂമി"],
+        "sentences": [
+            "ഹരി ജലം കൊണ്ടു പാലം കടക്കും",
+            "ഗതി നല്ലതാകാൻ കഥ വീണ്ടും ടൈപ്പ് ചെയ്യുക"
+        ]
+    },
+    {
+        "id": "lesson-04",
+        "slug": "lower-row-consonants",
+        "title": "Lower Row Consonants",
+        "level": "beginner",
+        "description": "Introduce the bottom-row consonants and nasal sounds used in everyday Malayalam words.",
+        "goal": "Build bottom-row accuracy with short bursts and repeated word sets.",
+        "focusKeys": ["Z", "X", "C", "V", "B", "N", "M"],
+        "estimatedMinutes": 11,
+        "words": ["മെഴുക്", "മനം", "വനം", "സമയം", "ലയം", "ശബ്ദം", "നാഴി", "മല", "വീട്", "എണം"],
+        "sentences": [
+            "മനം ശാന്തമായാൽ സമയം നന്നാകും",
+            "മലയും വനംവും ചേർന്നു നല്ല വരി ഉണ്ടാക്കും"
+        ]
+    },
+    {
+        "id": "lesson-05",
+        "slug": "common-two-letter-joins",
+        "title": "Common Two-Letter Joins",
+        "level": "intermediate",
+        "description": "Move from isolated letters to small Malayalam joins that appear in names and everyday words.",
+        "goal": "Type frequent joins smoothly without pausing between keys.",
+        "focusKeys": ["D", "F", "G", "H", "J", "K", "L"],
+        "estimatedMinutes": 14,
+        "words": ["പ്ര", "ക്ര", "ത്ര", "ഗ്ര", "ബ്ര", "പ്രതി", "ക്രമി", "ത്രയം", "ഗ്രാമം", "ബ്രഷ്"],
+        "sentences": [
+            "ഗ്രാമം പ്രഭാതത്തിൽ ശാന്തമാണ്",
+            "പ്രതി ദിവസം ക്രമമായി പരിശീലനം തുടരുക"
+        ]
+    },
+    {
+        "id": "lesson-06",
+        "slug": "daily-words-set-one",
+        "title": "Daily Malayalam Words",
+        "level": "intermediate",
+        "description": "Practice words you are likely to see in messages, captions, and ordinary conversation.",
+        "goal": "Increase familiarity with high-frequency Malayalam vocabulary.",
+        "focusKeys": ["A", "S", "F", "H", "J", "K", "L", "N", "M"],
+        "estimatedMinutes": 15,
+        "words": ["കേരളം", "സമയം", "നല്ലത്", "വീട്", "മലയാളം", "സുഹൃത്ത്", "പുസ്തകം", "രാവിലെ", "കുടുംബം", "പഠനം"],
+        "sentences": [
+            "കേരളം എന്റെ വീട്ടും പഠനവും കൂട്ടിചേർക്കുന്ന സ്ഥലമാണ്",
+            "മലയാളം നല്ല രീതിയിൽ പഠിക്കാൻ സമയം വേണം"
+        ]
+    },
+    {
+        "id": "lesson-07",
+        "slug": "speed-drill-short-lines",
+        "title": "Speed Drill Short Lines",
+        "level": "intermediate",
+        "description": "Use repeatable short lines to improve flow before you move to longer timed passages.",
+        "goal": "Keep accuracy high while slightly increasing speed.",
+        "focusKeys": ["Q", "W", "E", "A", "S", "F", "J", "K", "L"],
+        "estimatedMinutes": 12,
+        "words": ["കൈയിൽ", "പേരിൽ", "തീരിൽ", "രീതിയിൽ", "സമയം", "കഥയിൽ", "വഴിയിൽ", "താളിൽ", "മനസിൽ", "നേരിൽ"],
+        "sentences": [
+            "കഥയിൽ സമയം ശരിയായി പോകുന്നു",
+            "മനസിൽ നല്ല രീതിയിൽ വരി തയ്യാറാക്കുക"
+        ]
+    },
+    {
+        "id": "lesson-08",
+        "slug": "advanced-phrases-and-flow",
+        "title": "Advanced Phrases and Flow",
+        "level": "advanced",
+        "description": "Finish with longer Malayalam phrases that demand focus, consistency, and complete keyboard awareness.",
+        "goal": "Sustain accuracy across phrase-level typing with mixed character patterns.",
+        "focusKeys": ["Q", "W", "E", "R", "T", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"],
+        "estimatedMinutes": 18,
+        "words": ["മലയാളം", "പരിശീലനം", "വേഗത", "കൃത്യത", "പാഠഭാഗം", "അഭ്യാസം", "അനുഭവം", "പ്രവാഹം", "മുന്നേറ്റം", "വിശ്വാസം"],
+        "sentences": [
+            "മലയാളം ടൈപ്പിംഗ് അഭ്യാസം സ്ഥിരമായി തുടരുമ്പോൾ വേഗതയും കൃത്യതയും ഒരുമിച്ച് വളരും",
+            "ശരിയായ പാഠഭാഗം ഉപയോഗിച്ചാൽ അഭ്യാസത്തിൽ വിശ്വാസവും മുന്നേറ്റവും ലഭിക്കും"
+        ]
+    }
+]

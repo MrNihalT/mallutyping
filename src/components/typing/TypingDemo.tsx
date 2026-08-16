@@ -530,29 +530,37 @@ export default function TypingDemo({
                     }
                 }
             }}
-            className="flex h-full min-h-0 flex-col rounded-[1.5rem] border-[3px] border-black bg-[#dff6fb] p-3 shadow-[5px_5px_0px_black] cursor-pointer"
+            className="relative rounded-[2.4rem] border-[3px] border-black bg-[#dff6fb] p-6 shadow-[8px_8px_0px_black] transition-all cursor-text min-h-[300px] flex flex-col justify-between"
         >
-            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-                <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500 leading-none mb-1">
-                        Lesson {lessonIndex + 1} of {totalLessons}
-                    </p>
-                    <h1 className="text-xl font-black text-slate-900 sm:text-2xl leading-none mb-1">
+            {/* Header / Stats bar */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b-2 border-black/10 pb-4 mb-4 gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 select-none">
+                    <h1 className="text-xl font-black text-slate-900 leading-none">
                         {lesson.title}
                     </h1>
-                    <p className="text-xs font-semibold text-slate-600 leading-none">
-                        {stage.title} | Step {stageIndex + 1} of {totalStages}
-                    </p>
+                    <span className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">
+                        Lesson {lessonIndex + 1}/{totalLessons}
+                    </span>
+                    <span className="text-xs font-semibold text-slate-500">
+                        ({stage.title} • Step {stageIndex + 1}/{totalStages})
+                    </span>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-1.5 text-xs font-black text-slate-800">
+                <div className="flex flex-wrap items-center gap-2 text-xs font-black text-slate-800">
+                    {stage.type === "learn" && expectedPress && (
+                        <div className="flex items-center gap-1.5 bg-yellow-300 border-2 border-black px-3 py-1 rounded-full text-xs font-black shadow-[1.5px_1.5px_0px_black] animate-pulse">
+                            <span className="text-slate-800 font-bold">PRESS KEY:</span>
+                            <span>{hint}</span>
+                        </div>
+                    )}
+                    
                     <button
                         type="button"
                         onClick={() => {
                             playKeySound("Enter");
                             handleRestart();
                         }}
-                        className="rounded-full border-2 border-black bg-[#edf9fb] px-3 py-1 shadow-[1.5px_1.5px_0px_black] hover:bg-[#c084fc] hover:text-black active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer"
+                        className="rounded-full border-2 border-black bg-white px-3 py-1 shadow-[1.5px_1.5px_0px_black] hover:bg-[#c084fc] hover:text-black active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer"
                     >
                         Restart
                     </button>
@@ -589,26 +597,14 @@ export default function TypingDemo({
                 </div>
             </div>
 
-            <div className="mb-2 flex items-center justify-between gap-2 rounded-[1rem] border-[3px] border-black bg-white px-4 py-1.5 shadow-[2px_2px_0px_black]">
-                <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500 leading-none">
-                        Press This Key
-                    </p>
-                    <p className="mt-0.5 text-lg font-black text-slate-900 sm:text-xl leading-none">
-                        {hint}
-                    </p>
-                </div>
-                <div className="rounded-full bg-[#c084fc] px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-black">
-                    {stage.type}
-                </div>
-            </div>
 
-            <div className="flex min-h-0 flex-1 flex-col gap-2">
-                <div
-                    ref={containerRef}
-                    className="rounded-[1.5rem] bg-white/45 px-4 py-3 h-[170px] sm:h-[220px] overflow-hidden scroll-smooth relative"
-                >
-                    <div className="flex flex-wrap items-end gap-x-5 gap-y-4">
+
+            {/* Word display box */}
+            <div
+                ref={containerRef}
+                className="rounded-[1.5rem] bg-white/45 px-4 py-3 h-[170px] sm:h-[220px] overflow-hidden scroll-smooth relative select-none"
+            >
+                <div className="flex flex-wrap items-end gap-x-5 gap-y-4">
                         {stage.units.map((unit, index) => {
                             const isCurrent = index === unitIndex;
                             const isDone = index < unitIndex;
@@ -618,9 +614,13 @@ export default function TypingDemo({
                                 <div
                                     key={`${stage.id}-${unit.text}-${index}`}
                                     data-active={isCurrent}
-                                    className="flex flex-col items-center gap-2"
+                                    className={`flex flex-col items-center gap-2 rounded transition-all duration-150 ${
+                                        isCurrent 
+                                            ? "bg-black/5 ring-1 ring-black/10 px-2 -mx-2 scale-105 py-1" 
+                                            : ""
+                                    }`}
                                 >
-                                    {stage.type === "learn" && !isPracticeOrTest && lesson.id <= 44 && (
+                                    {stage.type === "learn" && !isPracticeOrTest && (
                                         <span
                                             className={`rounded-full px-4 py-1 text-xs font-black uppercase tracking-[0.16em] ${
                                                 isCurrent
@@ -640,22 +640,22 @@ export default function TypingDemo({
                                         </span>
                                     )}
                                     {isCurrent ? (
-                                        <span className="font-malayalam text-4xl font-semibold leading-none sm:text-6xl flex">
+                                        <span className="font-malayalam text-4xl font-semibold leading-none flex">
                                             {clusters.map((cluster, cIdx) => {
                                                 const isFullyTyped = cluster.endIndex <= pressIndex;
                                                 const isActive = cluster.startIndex <= pressIndex && pressIndex < cluster.endIndex;
 
-                                                let colorClass = "text-[#bdd0db]";
+                                                let colorClass = "text-slate-400";
                                                 let borderClass = "border-b-[3px] border-transparent pb-1";
 
                                                 if (isFullyTyped) {
-                                                    colorClass = "text-[#22c55e] font-black";
-                                                    borderClass = "border-b-[3px] border-[#22c55e] pb-1";
+                                                    colorClass = "text-slate-800 font-bold";
+                                                    borderClass = "border-b-[3px] border-transparent pb-1";
                                                 } else if (isActive) {
                                                     colorClass = wrongFlash
-                                                        ? "text-red-500 animate-pulse"
-                                                        : "text-[#7084a8]";
-                                                    borderClass = "border-b-[3px] border-[#7084a8] pb-1";
+                                                        ? "text-red-500 animate-pulse font-black"
+                                                        : "text-slate-700 font-bold";
+                                                    borderClass = "border-b-[3px] border-purple-600 pb-1";
                                                 }
 
                                                 return (
@@ -670,8 +670,8 @@ export default function TypingDemo({
                                         </span>
                                     ) : (
                                         <span
-                                            className={`font-malayalam text-4xl font-semibold leading-none sm:text-6xl ${
-                                                isDone ? "text-[#22c55e] font-bold" : "text-[#bdd0db]"
+                                            className={`font-malayalam text-4xl font-semibold leading-none ${
+                                                isDone ? "text-slate-800 font-bold" : "text-[#bdd0db]"
                                             }`}
                                         >
                                             {unit.text}
@@ -689,11 +689,7 @@ export default function TypingDemo({
                     </div>
                 )}
 
-                {stage.nextLine && (
-                    <p className="font-malayalam text-xl font-semibold text-[#bdd0db] sm:text-2xl px-2 leading-none mt-1">
-                        {stage.nextLine}
-                    </p>
-                )}
+
 
                 {!started ? (
                     <div className="my-3 flex justify-center">
@@ -809,33 +805,20 @@ export default function TypingDemo({
                                                 );
                                             }}
                                             style={flexStyle}
-                                            className={`h-8 rounded-[6px] border px-1 py-0.5 text-center transition-all duration-75 sm:h-9 ${bgClass} ${
-                                                isPressed
-                                                    ? "translate-y-[3px] border-b-[1px] pb-[3.5px]"
-                                                    : "translate-y-0 border-b-[4px]"
+                                            className={`rounded-lg border-2 border-b-4 text-center select-none font-bold py-1.5 transition-all duration-100 ${bgClass} ${
+                                                isPressed ? "scale-95" : ""
                                             }`}
                                         >
-                                            {item.normal ? (
-                                                <div className="flex h-full w-full justify-between items-center px-0.5 py-0.5">
-                                                    {/* Left side: English label */}
-                                                    <span className="text-[8px] font-bold text-slate-400 leading-none">
-                                                        {item.label}
-                                                    </span>
-                                                    {/* Right side: Malayalam characters (Shift on top, Normal on bottom) */}
-                                                    <div className="flex flex-col items-end justify-between h-full font-malayalam select-none">
-                                                        <span className="text-[8px] font-medium text-slate-400 leading-none">
-                                                            {item.shift || ""}
-                                                        </span>
-                                                        <span className="text-[10px] font-bold text-slate-800 leading-none">
-                                                            {item.normal}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            ) : (
-                                                <div className="flex h-full items-center justify-center text-[9px] font-bold select-none uppercase">
-                                                    {item.label}
-                                                </div>
-                                            )}
+                                            <div className="flex flex-col items-center leading-none">
+                                                {/* Shift Malayalam letter */}
+                                                <span className="text-[10px] text-slate-400 font-malayalam h-3.5">
+                                                    {item.shift || ""}
+                                                </span>
+                                                {/* Normal Malayalam letter / character label */}
+                                                <span className="text-sm font-black font-malayalam mt-0.5">
+                                                    {item.normal || item.label}
+                                                </span>
+                                            </div>
                                         </button>
                                     );
                                 })}
@@ -843,7 +826,6 @@ export default function TypingDemo({
                         ))}
                     </div>
                 </div>
-            </div>
             
             {/* Hidden input to capture mobile keyboard typing */}
             <input

@@ -4,43 +4,50 @@ export default function KeyboardReference({ compact = false }: { compact?: boole
     return (
         <div className="space-y-6">
             <section className="rounded-[2rem] border-[3px] border-black bg-white/88 p-4 shadow-[6px_6px_0px_black] sm:p-5">
-                <div className="overflow-hidden rounded-[1.75rem] border-[3px] border-black bg-[#596163] p-3">
-                    <div className="space-y-2 rounded-[1.3rem] bg-[#6b7375] p-2">
+                <div className="overflow-hidden rounded-[1.8rem] border-[4px] border-[#1e222b] bg-[#1e222b] p-2.5 w-full max-w-[820px] mx-auto shadow-[0_10px_20px_rgba(0,0,0,0.2)]">
+                    <div className="space-y-1.5 rounded-[1.2rem] bg-[#2d323f] p-2 w-full flex flex-col border-[2px] border-[#282d39]">
                         {keyboardRows.map((row, rowIndex) => (
-                            <div
-                                key={rowIndex}
-                                className="grid grid-cols-12 gap-2"
-                            >
+                            <div key={rowIndex} className="flex gap-1 w-full justify-between">
                                 {row.map((item) => {
-                                    const spanClass =
-                                        item.width === "space"
-                                            ? "col-span-6"
-                                            : item.width === "wide"
-                                              ? "col-span-2"
-                                              : "col-span-1";
+                                    const flexStyle =
+                                        item.code === "Space"
+                                            ? { flex: "6.25 6.25 0%" }
+                                            : item.code === "Backspace"
+                                              ? { flex: "2 2 0%" }
+                                              : item.code === "ShiftLeft" || item.code === "ShiftRight"
+                                                ? { flex: "2.25 2.25 0%" }
+                                                : item.code === "CapsLock"
+                                                  ? { flex: "1.75 1.75 0%" }
+                                                  : item.code === "Tab"
+                                                    ? { flex: "1.5 1.5 0%" }
+                                                    : item.tone === "mint"
+                                                      ? { flex: "1.25 1.25 0%" }
+                                                      : { flex: "1 1 0%" };
+
                                     const baseTone =
                                         item.tone === "accent"
-                                            ? "bg-[#a6f113]"
+                                            ? "bg-[#c7f43e] text-slate-900 border-[#a4cc26] border-b-[#89aa1b]"
                                             : item.tone === "mint"
-                                              ? "bg-[#8ce7ac]"
-                                              : "bg-white";
+                                              ? "bg-[#78db9e] text-slate-800 border-[#5cb882] border-b-[#48976b]"
+                                              : "bg-white text-slate-700 border-slate-200 border-b-slate-300";
 
                                     return (
                                         <div
                                             key={`${rowIndex}-${item.code}`}
-                                            className={`${spanClass} ${baseTone} flex h-12 flex-col items-center justify-center rounded-2xl border border-[#b5f2d1] px-2 text-center shadow-[0_4px_0_rgba(107,202,153,0.6)] sm:h-14`}
+                                            style={flexStyle}
+                                            className={`h-11 md:h-12 flex flex-col items-center justify-center rounded-[8px] border-[2px] px-1 font-bold text-center border-b-[5px] select-none ${baseTone}`}
                                         >
                                             {item.normal ? (
-                                                <div className="font-malayalam flex h-full w-full flex-col items-center justify-between py-1 text-slate-700">
-                                                    <span className="text-[11px] leading-none">
+                                                <div className="font-malayalam flex h-full w-full flex-col items-center justify-between py-0.5">
+                                                    <span className="text-[10px] md:text-[11px] leading-none opacity-60">
                                                         {item.label}
                                                     </span>
-                                                    <span className="text-[14px] font-semibold leading-none sm:text-[15px]">
+                                                    <span className="text-[13px] font-extrabold leading-none md:text-[14px]">
                                                         {item.normal}
                                                     </span>
                                                 </div>
                                             ) : (
-                                                <span className="text-xs font-semibold text-slate-800">
+                                                <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.05em]">
                                                     {item.label}
                                                 </span>
                                             )}

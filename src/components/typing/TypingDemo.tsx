@@ -24,8 +24,6 @@ type TypingDemoProps = {
     onStagePass: (metrics: StagePassMetrics) => void;
 };
 
-const SOUND_URL = "/click-sound.mp3";
-
 function formatHint(press: TrainerPress | null) {
     if (!press) {
         return "START";
@@ -54,28 +52,71 @@ function getGraphemeClusters(text: string) {
     }));
 }
 
-function playSyntheticClick() {
+function playSyntheticClick(code?: string) {
     if (typeof window === "undefined") return;
     try {
-        const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+        const AudioContext =
+            window.AudioContext ||
+            (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
         if (!AudioContext) return;
         const ctx = new AudioContext();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
         
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(1200, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.04);
+        // Slight randomized pitch multiplier for natural physical keyboard variation
+        const pitchMultiplier = 0.96 + Math.random() * 0.08; 
         
-        gain.gain.setValueAtTime(0.08, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+        let freq1 = 1500;
+        let freq2 = 280;
+        let decayTime = 0.025;
+        let volume2 = 0.08;
         
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+        if (code === "Space") {
+            // Spacebar sounds deeper, hollower, and decays slightly slower
+            freq1 = 1100;
+            freq2 = 180;
+            decayTime = 0.035;
+            volume2 = 0.12;
+        } else if (
+            code === "Backspace" || 
+            code === "Enter" || 
+            code === "ShiftLeft" || 
+            code === "ShiftRight" || 
+            code === "CapsLock" || 
+            code === "Tab"
+        ) {
+            // Modifiers sound slightly different (clackier, larger keycaps)
+            freq1 = 1300;
+            freq2 = 220;
+            decayTime = 0.03;
+            volume2 = 0.09;
+        }
         
-        osc.start();
-        osc.stop(ctx.currentTime + 0.04);
-    } catch (e) {
+        // 1. Sharp mechanical switch contact click (tactile bump click)
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = "sine";
+        osc1.frequency.setValueAtTime(freq1 * pitchMultiplier, ctx.currentTime);
+        osc1.frequency.exponentialRampToValueAtTime(700 * pitchMultiplier, ctx.currentTime + 0.006);
+        gain1.gain.setValueAtTime(0.04, ctx.currentTime);
+        gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.006);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        
+        // 2. Keycap bottoming clack (switch bottom-out sound)
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = "triangle";
+        osc2.frequency.setValueAtTime(freq2 * pitchMultiplier, ctx.currentTime);
+        osc2.frequency.exponentialRampToValueAtTime(80 * pitchMultiplier, ctx.currentTime + decayTime);
+        gain2.gain.setValueAtTime(volume2, ctx.currentTime);
+        gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + decayTime);
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        
+        osc1.start();
+        osc1.stop(ctx.currentTime + 0.006);
+        osc2.start();
+        osc2.stop(ctx.currentTime + decayTime);
+    } catch {
         // ignore
     }
 }
@@ -90,6 +131,43 @@ export default function TypingDemo({
     soundEnabled,
     onStagePass,
 }: TypingDemoProps) {
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const passTimeoutRef = useRef<number | null>(null);
+    const processInputRef = useRef<(code: string, shiftPressed: boolean) => void>(
+        () => undefined,
+    );
+    const hiddenInputRef = useRef<HTMLInputElement | null>(null);
+
+    const [prevSoundEnabled, setPrevSoundEnabled] = useState(soundEnabled);
+    const [localSoundEnabled, setLocalSoundEnabled] = useState(soundEnabled);
+
+    if (soundEnabled !== prevSoundEnabled) {
+        setPrevSoundEnabled(soundEnabled);
+        setLocalSoundEnabled(soundEnabled);
+    }
+
+    const [isMobile, setIsMobile] = useState(false);
+    const [showMobileWarning, setShowMobileWarning] = useState(false);
+    const [isInputFocused, setIsInputFocused] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            const mobile = window.innerWidth < 768;
+            setIsMobile(mobile);
+        };
+        
+        // Defer initial state checks to prevent synchronous setState within the effect body
+        window.setTimeout(() => {
+            checkMobile();
+            if (window.innerWidth < 768) {
+                setShowMobileWarning(true);
+            }
+        }, 0);
+
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
+
     const isPracticeOrTest = useMemo(() => {
         const title = lesson.title || "";
         const category = lesson.category || "";
@@ -118,14 +196,6 @@ export default function TypingDemo({
     const [correctPresses, setCorrectPresses] = useState(0);
     const [wrongPresses, setWrongPresses] = useState(0);
     const [passed, setPassed] = useState(false);
-    const audioRef = useRef<HTMLAudioElement | null>(null);
-    const [localSoundEnabled, setLocalSoundEnabled] = useState(soundEnabled);
-
-    useEffect(() => {
-        setLocalSoundEnabled(soundEnabled);
-    }, [soundEnabled]);
-
-    const containerRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         if (!containerRef.current) return;
@@ -166,11 +236,6 @@ export default function TypingDemo({
             window.clearTimeout(passTimeoutRef.current);
         }
     }, [stage.duration]);
-    const soundCutoffRef = useRef<number | null>(null);
-    const passTimeoutRef = useRef<number | null>(null);
-    const processInputRef = useRef<(code: string, shiftPressed: boolean) => void>(
-        () => undefined,
-    );
 
     const currentUnit = stage.units[unitIndex] ?? null;
     const expectedPress = currentUnit?.sequence[pressIndex] ?? null;
@@ -198,45 +263,13 @@ export default function TypingDemo({
         return Math.round((correctPresses / 5 / elapsedSeconds) * 60);
     }, [correctPresses, elapsedSeconds]);
 
-    const playKeySound = useCallback(() => {
+    const playKeySound = useCallback((code?: string) => {
         if (!localSoundEnabled) {
             return;
         }
 
-        // Always play synthetic mechanical click immediately for 0ms latency and 100% reliability
-        playSyntheticClick();
-
-        // Also attempt to play the custom MP3 file
-        if (audioRef.current) {
-            try {
-                if (audioRef.current.readyState > 0) {
-                    audioRef.current.currentTime = 0;
-                }
-                void audioRef.current.play().catch(() => undefined);
-            } catch (e) {
-                // ignore
-            }
-        }
-
-        if (soundCutoffRef.current) {
-            window.clearTimeout(soundCutoffRef.current);
-        }
-
-        // Snappy cutoff after 150ms for a crisp mechanical keyboard click feel
-        soundCutoffRef.current = window.setTimeout(() => {
-            if (!audioRef.current) {
-                return;
-            }
-
-            try {
-                audioRef.current.pause();
-                if (audioRef.current.readyState > 0) {
-                    audioRef.current.currentTime = 0;
-                }
-            } catch (e) {
-                // ignore
-            }
-        }, 150);
+        // Play high-quality synthetic mechanical click
+        playSyntheticClick(code);
     }, [localSoundEnabled]);
 
     const flashPressed = useCallback((code: string, shiftPressed: boolean) => {
@@ -291,7 +324,7 @@ export default function TypingDemo({
 
             // Handle Backspace: Go back one character (within current unit or to previous unit)
             if (code === "Backspace") {
-                playKeySound();
+                playKeySound("Backspace");
                 if (pressIndex > 0) {
                     setPressIndex(pressIndex - 1);
                     setCorrectPresses((correct) => Math.max(0, correct - 1));
@@ -320,7 +353,7 @@ export default function TypingDemo({
                 return;
             }
 
-            playKeySound();
+            playKeySound(code);
             flashPressed(code, shiftPressed && expectedShift);
 
             const matches = code === expectedPress.code && shiftPressed === expectedShift;
@@ -359,7 +392,7 @@ export default function TypingDemo({
             flashPressed,
             playKeySound,
             pressIndex,
-            stage.units.length,
+            stage.units,
             started,
             unitIndex,
         ],
@@ -369,10 +402,7 @@ export default function TypingDemo({
         processInputRef.current = processInput;
     }, [processInput]);
 
-    useEffect(() => {
-        audioRef.current = new Audio(SOUND_URL);
-        audioRef.current.preload = "auto";
-    }, []);
+
 
     useEffect(() => {
         if (!started || finished) {
@@ -393,6 +423,32 @@ export default function TypingDemo({
 
         return () => window.clearInterval(timer);
     }, [finalizeStage, finished, started]);
+
+    const handleHiddenInput = useCallback((event: React.FormEvent<HTMLInputElement>) => {
+        const val = event.currentTarget.value;
+        if (!val) return;
+        
+        event.currentTarget.value = "";
+        const char = val.slice(-1);
+        
+        let code = "";
+        let shiftPressed = false;
+        
+        if (char === " ") {
+            code = "Space";
+        } else if (char === "Backspace") {
+            code = "Backspace";
+        } else if (/[a-zA-Z]/.test(char)) {
+            code = `Key${char.toUpperCase()}`;
+            shiftPressed = char === char.toUpperCase();
+        } else {
+            return;
+        }
+        
+        if (processInputRef.current) {
+            processInputRef.current(code, shiftPressed);
+        }
+    }, []);
 
     useEffect(() => {
         function handleKeyDown(event: KeyboardEvent) {
@@ -421,8 +477,13 @@ export default function TypingDemo({
             }
 
             // Intercept Backspace to delete the last typed key
-            if (event.code === "Backspace") {
+            if (event.code === "Backspace" || event.key === "Backspace") {
                 processInputRef.current("Backspace", false);
+                return;
+            }
+
+            if (isMobile) {
+                // Ignore other keys on mobile to let hidden input handle them
                 return;
             }
 
@@ -440,10 +501,21 @@ export default function TypingDemo({
             window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
         };
-    }, [finished, started]);
+    }, [finished, started, isMobile]);
 
     return (
-        <section className="flex h-full min-h-0 flex-col rounded-[1.5rem] border-[3px] border-black bg-[#dff6fb] p-3 shadow-[5px_5px_0px_black]">
+        <>
+        <section 
+            onClick={(e) => {
+                const target = e.target as HTMLElement;
+                if (target.tagName !== "BUTTON" && target.tagName !== "A") {
+                    if (hiddenInputRef.current) {
+                        hiddenInputRef.current.focus();
+                    }
+                }
+            }}
+            className="flex h-full min-h-0 flex-col rounded-[1.5rem] border-[3px] border-black bg-[#dff6fb] p-3 shadow-[5px_5px_0px_black] cursor-pointer"
+        >
             <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                 <div>
                     <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500 leading-none mb-1">
@@ -461,7 +533,7 @@ export default function TypingDemo({
                     <button
                         type="button"
                         onClick={() => {
-                            playKeySound();
+                            playKeySound("Enter");
                             handleRestart();
                         }}
                         className="rounded-full border-2 border-black bg-[#edf9fb] px-3 py-1 shadow-[1.5px_1.5px_0px_black] hover:bg-[#c7f43e] active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer"
@@ -480,7 +552,7 @@ export default function TypingDemo({
                             const newVal = !localSoundEnabled;
                             setLocalSoundEnabled(newVal);
                             if (newVal) {
-                                playSyntheticClick();
+                                playSyntheticClick("Space");
                             }
                         }}
                         className={`rounded-full border-2 border-black px-3 py-1 shadow-[1.5px_1.5px_0px_black] hover:bg-slate-100 active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer ${
@@ -573,7 +645,7 @@ export default function TypingDemo({
                                                 return (
                                                     <span
                                                         key={cIdx}
-                                                        className={`${colorClass} ${borderClass} transition-all duration-150`}
+                                                        className={`${colorClass} ${borderClass} transition-all duration-150 whitespace-pre`}
                                                     >
                                                         {cluster.text}
                                                     </span>
@@ -595,6 +667,12 @@ export default function TypingDemo({
                     </div>
                 </div>
 
+                {isMobile && (
+                    <div className="my-1.5 text-center text-xs font-black text-slate-500 animate-pulse">
+                        {isInputFocused ? "📱 Keyboard active. Start typing!" : "📱 Tap anywhere to open keyboard"}
+                    </div>
+                )}
+
                 {stage.nextLine && (
                     <p className="font-malayalam text-xl font-semibold text-[#bdd0db] sm:text-2xl px-2 leading-none mt-1">
                         {stage.nextLine}
@@ -607,7 +685,7 @@ export default function TypingDemo({
                             type="button"
                             onClick={() => {
                                 setStarted(true);
-                                playKeySound();
+                                playKeySound("Enter");
                             }}
                             className="rounded-full border-[3px] border-black bg-[#c7f43e] px-6 py-2.5 text-base font-black text-slate-900 shadow-[3px_3px_0px_black]"
                         >
@@ -628,8 +706,8 @@ export default function TypingDemo({
                     </div>
                 ) : null}
 
-                <div className="mt-auto overflow-hidden rounded-[1.2rem] border-[3px] border-black bg-[#596163] p-1.5 w-full">
-                    <div className="space-y-1 rounded-[0.8rem] bg-[#6b7375] p-1 w-full flex flex-col">
+                <div className="mt-auto hidden md:block overflow-hidden rounded-[1.8rem] border-[4px] border-[#1e222b] bg-[#1e222b] p-2.5 w-full max-w-[820px] mx-auto shadow-[0_10px_20px_rgba(0,0,0,0.2)]">
+                    <div className="space-y-1.5 rounded-[1.2rem] bg-[#2d323f] p-2 w-full flex flex-col border-[2px] border-[#282d39]">
                         {keyboardRows.map((row, rowIndex) => (
                             <div key={rowIndex} className="flex gap-1 w-full justify-between">
                                 {row.map((item) => {
@@ -656,16 +734,16 @@ export default function TypingDemo({
                                         isShiftCode(item.code);
                                     const baseTone =
                                         item.tone === "accent"
-                                            ? "bg-[#a6f113] text-slate-900 border-[#83c60a]"
+                                            ? "bg-[#c7f43e] text-slate-900 border-[#a4cc26] border-b-[#89aa1b]"
                                             : item.tone === "mint"
-                                              ? "bg-[#8ce7ac] text-slate-800 border-[#65cc8c]"
-                                              : "bg-white text-slate-700 border-slate-200";
+                                              ? "bg-[#78db9e] text-slate-800 border-[#5cb882] border-b-[#48976b]"
+                                              : "bg-white text-slate-700 border-slate-200 border-b-slate-300";
 
                                     // Determine the visual tone when pressed (Green = correct, Red = wrong, Gray = modifier)
                                     let bgClass = baseTone;
                                     if (isPressed) {
                                         if (isExpectedMain || isExpectedShift) {
-                                            bgClass = "bg-[#22c55e] text-white border-[#166534] shadow-none"; // Correct (Green)
+                                            bgClass = "bg-[#22c55e] text-white border-[#166534] border-b-[#166534]"; // Correct (Green)
                                         } else if (
                                             isShiftCode(item.code) ||
                                             item.code === "ControlLeft" ||
@@ -676,13 +754,13 @@ export default function TypingDemo({
                                             item.code === "MetaRight" ||
                                             item.code === "CapsLock"
                                         ) {
-                                            bgClass = "bg-slate-400 text-white border-slate-600 shadow-none"; // Modifier (Gray)
+                                            bgClass = "bg-slate-400 text-white border-slate-600 border-b-slate-600"; // Modifier (Gray)
                                         } else {
-                                            bgClass = "bg-[#ef4444] text-white border-[#991b1b] shadow-none"; // Wrong (Red)
+                                            bgClass = "bg-[#ef4444] text-white border-[#991b1b] border-b-[#991b1b]"; // Wrong (Red)
                                         }
                                     } else if (isExpectedMain || isExpectedShift) {
                                         // Pulse expected keys (suggestions) in bright lime green when not pressed
-                                        bgClass = "bg-[#c7f43e] text-slate-900 border-[#83c60a] shadow-[0_2px_0_#83c60a] animate-[pulse_1.5s_infinite]";
+                                        bgClass = "bg-[#c7f43e] text-slate-900 border-[#83c60a] border-b-[#659807] animate-[pulse_1.5s_infinite]";
                                     }
 
                                     return (
@@ -690,7 +768,7 @@ export default function TypingDemo({
                                             key={`${rowIndex}-${item.code}`}
                                             type="button"
                                             onClick={() => {
-                                                playKeySound();
+                                                playKeySound(item.code);
                                                 if (
                                                     isShiftCode(item.code) ||
                                                     item.code === "ControlLeft" ||
@@ -715,12 +793,10 @@ export default function TypingDemo({
                                                 );
                                             }}
                                             style={flexStyle}
-                                            className={`h-8 rounded-lg border px-1 py-0.5 text-center shadow-[0_2px_0_rgba(107,202,153,0.6)] sm:h-9 ${bgClass} ${
-                                                isPressed ? "translate-y-[2px] shadow-none" : ""
-                                            } ${
-                                                isExpectedMain || isExpectedShift
-                                                    ? "ring-2 ring-[#c7f43e]/80"
-                                                    : ""
+                                            className={`h-8 rounded-[6px] border px-1 py-0.5 text-center transition-all duration-75 sm:h-9 ${bgClass} ${
+                                                isPressed
+                                                    ? "translate-y-[3px] border-b-[1px] pb-[3.5px]"
+                                                    : "translate-y-0 border-b-[4px]"
                                             }`}
                                         >
                                             {item.normal ? (
@@ -752,6 +828,52 @@ export default function TypingDemo({
                     </div>
                 </div>
             </div>
+            
+            {/* Hidden input to capture mobile keyboard typing */}
+            <input
+                ref={hiddenInputRef}
+                type="text"
+                value=""
+                onChange={handleHiddenInput}
+                onFocus={() => setIsInputFocused(true)}
+                onBlur={() => setIsInputFocused(false)}
+                className="absolute -top-40 left-0 opacity-0 pointer-events-none w-0 h-0"
+                autoCapitalize="none"
+                autoComplete="off"
+                autoCorrect="off"
+                spellCheck={false}
+            />
         </section>
+        
+        {/* Mobile Warning Modal */}
+        {showMobileWarning && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+                <div className="w-full max-w-sm rounded-[2rem] border-[3px] border-black bg-white p-6 text-center shadow-[8px_8px_0px_black] animate-in fade-in zoom-in-95 duration-200">
+                    <span className="text-4xl">⚠️</span>
+                    <h2 className="mt-4 text-2xl font-black text-slate-900">
+                        Mobile Notice
+                    </h2>
+                    <p className="mt-2 text-sm font-bold text-slate-600">
+                        MalluTyping is optimized for physical keyboard touch typing.
+                        You can try it on mobile, but the experience is limited.
+                    </p>
+                    <div className="mt-6">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setShowMobileWarning(false);
+                                if (hiddenInputRef.current) {
+                                    hiddenInputRef.current.focus();
+                                }
+                            }}
+                            className="w-full rounded-full border-[3px] border-black bg-[#c7f43e] py-3 text-sm font-black text-slate-900 shadow-[3px_3px_0px_black] hover:bg-[#b5e032] active:translate-y-[3px] active:shadow-none transition-all cursor-pointer"
+                        >
+                            Continue Anyway
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+        </>
     );
 }

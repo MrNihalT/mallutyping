@@ -31,6 +31,7 @@ create table if not exists public.progress (
     stars integer not null default 0 check (stars between 0 and 3),
     accuracy integer not null default 0,
     best_wpm integer not null default 0,
+    current_stage_index integer not null default 0,
     updated_at timestamptz not null default timezone('utc', now()),
     unique (user_id, lesson_id)
 );

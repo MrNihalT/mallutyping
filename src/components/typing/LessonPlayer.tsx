@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import TypingDemo from "@/components/typing/TypingDemo";
 import { trainerLessons } from "@/lib/trainer-lessons";
@@ -9,6 +9,7 @@ import { trainerLessons } from "@/lib/trainer-lessons";
 type RemoteProgressRow = {
     lesson_id: number;
     completed: boolean;
+    current_stage_index?: number;
 };
 
 type RemoteSettings = {
@@ -39,7 +40,6 @@ export default function LessonPlayer({ lessonId }: { lessonId: number }) {
     const [isSignedIn, setIsSignedIn] = useState(false);
     const [completedLessonIds, setCompletedLessonIds] = useState<number[]>([]);
     const [unlockedIndex, setUnlockedIndex] = useState(0);
-    const [syncMessage, setSyncMessage] = useState("Checking progress...");
     const [isHydrating, setIsHydrating] = useState(true);
 
     const currentStage = lesson?.stages[currentStageIndex];
@@ -70,11 +70,17 @@ export default function LessonPlayer({ lessonId }: { lessonId: number }) {
                 setUnlockedIndex(getUnlockedIndex(completed));
                 setIsSignedIn(payload.authenticated);
                 setSoundEnabled(payload.settings?.sound ?? true);
-                setSyncMessage(
-                    payload.authenticated
-                        ? "Progress sync is active."
-                        : "Guest mode is active. Login if you want sync.",
+
+                // Restore saved stage index for this lesson if available
+                const currentProgressRow = (payload.progress ?? []).find(
+                    (item) => item.lesson_id === lessonId,
                 );
+                if (currentProgressRow?.current_stage_index !== undefined) {
+                    const savedStageIndex = currentProgressRow.current_stage_index;
+                    if (savedStageIndex >= 0 && savedStageIndex < (lesson?.stages.length ?? 0)) {
+                        setCurrentStageIndex(savedStageIndex);
+                    }
+                }
             } finally {
                 if (!cancelled) {
                     setIsHydrating(false);
@@ -87,12 +93,7 @@ export default function LessonPlayer({ lessonId }: { lessonId: number }) {
         return () => {
             cancelled = true;
         };
-    }, []);
-
-    const progressPercent = useMemo(
-        () => Math.round((completedLessonIds.length / trainerLessons.length) * 100),
-        [completedLessonIds.length],
-    );
+    }, [lessonId, lesson?.stages.length]);
 
     if (!lesson) {
         return (
@@ -113,7 +114,6 @@ export default function LessonPlayer({ lessonId }: { lessonId: number }) {
         timeSpent: number;
     }) {
         if (!isSignedIn) {
-            setSyncMessage("Lesson passed in guest mode.");
             return;
         }
 
@@ -131,16 +131,16 @@ export default function LessonPlayer({ lessonId }: { lessonId: number }) {
                     totalKeys: metrics.totalKeys,
                     timeSpent: metrics.timeSpent,
                     stars: metrics.accuracy >= 95 ? 3 : metrics.accuracy >= 90 ? 2 : 1,
+                    completed: true,
+                    currentStageIndex: 0,
                 }),
             });
 
             if (!response.ok) {
                 throw new Error("save failed");
             }
-
-            setSyncMessage("Progress saved to Supabase.");
         } catch {
-            setSyncMessage("Lesson passed, but saving failed.");
+            // ignore save failure silently
         }
     }
 
@@ -154,8 +154,26 @@ export default function LessonPlayer({ lessonId }: { lessonId: number }) {
         const isFinalStage = currentStageIndex === lesson.stages.length - 1;
 
         if (!isFinalStage) {
-            setCurrentStageIndex((current) => current + 1);
-            setSyncMessage("Next step unlocked.");
+            const nextStageIndex = currentStageIndex + 1;
+            setCurrentStageIndex(nextStageIndex);
+
+            if (isSignedIn) {
+                try {
+                    void fetch("/api/progress", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            lessonId: lesson.id,
+                            currentStageIndex: nextStageIndex,
+                            completed: false,
+                        }),
+                    });
+                } catch {
+                    // ignore silent save errors
+                }
+            }
             return;
         }
 

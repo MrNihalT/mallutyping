@@ -16,7 +16,7 @@ export async function GET() {
         await Promise.all([
             supabase
                 .from("progress")
-                .select("lesson_id, completed, best_wpm, accuracy, stars")
+                .select("lesson_id, completed, best_wpm, accuracy, stars, current_stage_index")
                 .eq("user_id", user.id)
                 .order("lesson_id"),
             supabase.from("statistics").select("*").eq("user_id", user.id).maybeSingle(),
@@ -54,6 +54,8 @@ export async function POST(request: Request) {
         stars?: number;
         totalKeys?: number;
         timeSpent?: number;
+        currentStageIndex?: number;
+        completed?: boolean;
     };
 
     if (!body.lessonId) {
@@ -61,12 +63,8 @@ export async function POST(request: Request) {
     }
 
     const lessonId = body.lessonId;
-    const accuracy = Math.max(0, Math.round(body.accuracy ?? 0));
-    const wpm = Math.max(0, Math.round(body.wpm ?? 0));
-    const mistakes = Math.max(0, Math.round(body.mistakes ?? 0));
-    const stars = Math.max(1, Math.min(3, Math.round(body.stars ?? 1)));
-    const totalKeys = Math.max(0, Math.round(body.totalKeys ?? 0));
-    const timeSpent = Math.max(0, Math.round(body.timeSpent ?? 0));
+    const isCompleted = body.completed ?? true; // Default to true if not specified for backwards compatibility
+    const currentStageIndex = body.currentStageIndex ?? 0;
 
     const { data: existingProgress } = await supabase
         .from("progress")
@@ -74,6 +72,38 @@ export async function POST(request: Request) {
         .eq("user_id", user.id)
         .eq("lesson_id", lessonId)
         .maybeSingle();
+
+    if (!isCompleted) {
+        if (existingProgress?.id) {
+            await supabase
+                .from("progress")
+                .update({
+                    current_stage_index: currentStageIndex,
+                    updated_at: new Date().toISOString(),
+                })
+                .eq("id", existingProgress.id);
+        } else {
+            await supabase.from("progress").insert({
+                user_id: user.id,
+                lesson_id: lessonId,
+                completed: false,
+                current_stage_index: currentStageIndex,
+            });
+        }
+
+        return Response.json({
+            authenticated: true,
+            lessonId,
+            saved: true,
+        });
+    }
+
+    const accuracy = Math.max(0, Math.round(body.accuracy ?? 0));
+    const wpm = Math.max(0, Math.round(body.wpm ?? 0));
+    const mistakes = Math.max(0, Math.round(body.mistakes ?? 0));
+    const stars = Math.max(1, Math.min(3, Math.round(body.stars ?? 1)));
+    const totalKeys = Math.max(0, Math.round(body.totalKeys ?? 0));
+    const timeSpent = Math.max(0, Math.round(body.timeSpent ?? 0));
 
     await supabase.from("lesson_attempts").insert({
         user_id: user.id,
@@ -88,6 +118,7 @@ export async function POST(request: Request) {
             .from("progress")
             .update({
                 completed: true,
+                current_stage_index: currentStageIndex,
                 accuracy: Math.max(existingProgress.accuracy ?? 0, accuracy),
                 best_wpm: Math.max(existingProgress.best_wpm ?? 0, wpm),
                 stars: Math.max(existingProgress.stars ?? 0, stars),
@@ -99,6 +130,7 @@ export async function POST(request: Request) {
             user_id: user.id,
             lesson_id: lessonId,
             completed: true,
+            current_stage_index: currentStageIndex,
             accuracy,
             best_wpm: wpm,
             stars,

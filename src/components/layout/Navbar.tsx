@@ -7,6 +7,7 @@ import {
     IconBrandInstagram,
     IconBrandTwitter,
     IconGlobe,
+    IconBarbell,
 } from "@tabler/icons-react";
 
 type NavbarUser = {
@@ -28,16 +29,29 @@ export default function Navbar({ user }: { user: NavbarUser | null }) {
                 </h1>
             </Link>
 
-            <Link
-                href="/keyboard"
-                data-chip="true"
-                className="rounded-full border-2 border-black bg-[#eaf9fc] px-4 py-2 text-sm font-bold shadow-[3px_3px_0px_black]"
-            >
-                <span className="flex items-center gap-2">
-                    <IconKeyboard size={16} />
-                    Keyboard
-                </span>
-            </Link>
+            <div className="flex gap-2">
+                <Link
+                    href="/practice"
+                    data-chip="true"
+                    className="rounded-full border-2 border-black bg-[#fef08a] px-4 py-2 text-sm font-bold shadow-[3px_3px_0px_black] hover:bg-yellow-200 transition-colors"
+                >
+                    <span className="flex items-center gap-2">
+                        <IconBarbell size={16} />
+                        Practice
+                    </span>
+                </Link>
+
+                <Link
+                    href="/keyboard"
+                    data-chip="true"
+                    className="rounded-full border-2 border-black bg-[#eaf9fc] px-4 py-2 text-sm font-bold shadow-[3px_3px_0px_black] hover:bg-cyan-100 transition-colors"
+                >
+                    <span className="flex items-center gap-2">
+                        <IconKeyboard size={16} />
+                        Keyboard
+                    </span>
+                </Link>
+            </div>
 
             <div className="flex flex-wrap items-center gap-3">
                 {/* Social Links */}

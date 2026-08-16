@@ -63,8 +63,15 @@ export default async function PublicHeader() {
                 </a>
 
                 <Link
+                    href="/practice"
+                    className="rounded-full border-2 border-black bg-[#fef08a] px-3 py-1 text-xs font-black text-slate-900 shadow-[2px_2px_0px_black] hover:bg-yellow-200 transition-colors"
+                >
+                    Practice
+                </Link>
+
+                <Link
                     href="/keyboard"
-                    className="rounded-full border-2 border-black bg-[#eaf9fc] px-3 py-1 text-xs font-black text-slate-900 shadow-[2px_2px_0px_black]"
+                    className="rounded-full border-2 border-black bg-[#eaf9fc] px-3 py-1 text-xs font-black text-slate-900 shadow-[2px_2px_0px_black] hover:bg-cyan-100 transition-colors"
                 >
                     Keyboard
                 </Link>

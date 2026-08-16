@@ -52,15 +52,31 @@ function getGraphemeClusters(text: string) {
     }));
 }
 
-function playSyntheticClick(code?: string) {
-    if (typeof window === "undefined") return;
-    try {
-        const AudioContext =
+let globalAudioCtx: AudioContext | null = null;
+
+function getAudioContext() {
+    if (typeof window === "undefined") return null;
+    if (!globalAudioCtx) {
+        const AudioContextClass =
             window.AudioContext ||
-            (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = new AudioContext();
-        
+            (window as unknown as { webkitAudioContext?: typeof window.AudioContext }).webkitAudioContext;
+        if (AudioContextClass) {
+            globalAudioCtx = new AudioContextClass();
+        }
+    }
+    return globalAudioCtx;
+}
+
+function playSyntheticClick(code?: string) {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    
+    // Resume context if suspended (browser security blocks autoplay without gesture)
+    if (ctx.state === "suspended") {
+        void ctx.resume();
+    }
+    
+    try {
         // Slight randomized pitch multiplier for natural physical keyboard variation
         const pitchMultiplier = 0.96 + Math.random() * 0.08; 
         

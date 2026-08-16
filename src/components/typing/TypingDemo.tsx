@@ -722,7 +722,7 @@ export default function TypingDemo({
                     </div>
                 ) : null}
 
-                <div className="mt-auto hidden md:block overflow-hidden rounded-[1.8rem] border-[4px] border-[#1e222b] bg-[#1e222b] p-2.5 w-full max-w-[820px] mx-auto shadow-[0_10px_20px_rgba(0,0,0,0.2)]">
+                <div className="mt-6 mb-2 hidden md:block overflow-hidden rounded-[1.8rem] border-[4px] border-[#1e222b] bg-[#1e222b] p-2.5 w-full max-w-[820px] mx-auto shadow-[0_10px_20px_rgba(0,0,0,0.2)]">
                     <div className="space-y-1.5 rounded-[1.2rem] bg-[#2d323f] p-2 w-full flex flex-col border-[2px] border-[#282d39]">
                         {keyboardRows.map((row, rowIndex) => (
                             <div key={rowIndex} className="flex gap-1 w-full justify-between">

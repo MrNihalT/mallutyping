@@ -1,5 +1,21 @@
+import type { Metadata } from "next";
 import PublicHeader from "@/components/layout/PublicHeader";
 import KeyboardReference from "@/components/typing/KeyboardReference";
+
+export const metadata: Metadata = {
+    title: "Malayalam Keyboard Layout & Key Map Reference | MalluTyping",
+    description:
+        "Learn and practice Malayalam typing online. View the Malayalam character mapping on the standard inscript keyboard layout with our interactive reference.",
+    keywords: [
+        "malayalam keyboard",
+        "malayalam keyboard layout",
+        "malayalam key map",
+        "malayalam inscript keyboard",
+        "malayalam characters keyboard",
+        "learn malayalam keyboard layout",
+        "മലയാളം കീബോർഡ് ലേഔട്ട്"
+    ],
+};
 
 export default function KeyboardPage() {
     return (

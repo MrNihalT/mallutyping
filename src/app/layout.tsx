@@ -22,26 +22,45 @@ const notoSansMalayalam = Noto_Sans_Malayalam({
 
 export const metadata: Metadata = {
     metadataBase: new URL("https://mallutyping.vercel.app"),
-    title: "MalluTyping | Malayalam Typing Practice & Speed Test",
+    title: "MalluTyping - Malayalam Typing Practice, Keyboard & Speed Test Online",
     description:
-        "Practice Malayalam typing with structured lessons, a visual keyboard, and speed-focused drills built for learners.",
+        "Easy, fast, and accurate Malayalam typing online. Practice Malayalam typing with structured lessons, an interactive Malayalam keyboard layout reference, and real-time typing speed tests. Ideal for learning Malayalam typing and improving typing speed.",
     keywords: [
         "malayalam typing",
         "malayalam keyboard",
-        "mallu typing",
-        "malayalam typing practice",
-        "malayalam typing lessons",
-        "malayalam speed test",
-        "malayalam inscript keyboard",
         "learn malayalam typing",
+        "malayalam",
+        "malayalam typing online",
+        "malayalam keyboard online",
+        "english to malayalam typing",
+        "malayalam typing practice",
+        "malayalam speed test",
+        "malayalam typing speed test",
+        "malayalam key map",
+        "malayalam inscript keyboard",
+        "mallu typing",
+        "malayalam keyboard layout",
+        "learn to type malayalam",
+        "online malayalam typing",
+        "malayalam typing tutor",
+        "malayalam typing lessons",
+        "desh keyboard online",
+        "google malayalam typing",
+        "മലയാളം ടൈപ്പിംഗ്",
+        "മലയാളം കീബോർഡ്",
+        "മലയാളം എഴുത്ത്",
+        "manglish keyboard",
+        "manglish typing",
+        "malayalam alphabet keyboard",
+        "malayalam typing test online"
     ],
     authors: [{ name: "Zoxilsi" }],
     creator: "Zoxilsi",
     publisher: "Zoxilsi",
     openGraph: {
-        title: "MalluTyping | Malayalam Typing Practice & Speed Test",
+        title: "MalluTyping - Malayalam Typing Practice, Keyboard & Speed Test Online",
         description:
-            "Learn Malayalam typing with guided lessons, keyboard mapping, and performance tracking.",
+            "Easy, fast, and accurate Malayalam typing online. Practice Malayalam typing with structured lessons, an interactive Malayalam keyboard layout reference, and real-time typing speed tests.",
         url: "https://mallutyping.vercel.app",
         siteName: "MalluTyping",
         type: "website",
@@ -49,9 +68,9 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "MalluTyping | Malayalam Typing Practice & Speed Test",
+        title: "MalluTyping - Malayalam Typing Practice, Keyboard & Speed Test Online",
         description:
-            "A Malayalam typing platform with lessons, keymap guidance, and clean practice flows.",
+            "Easy, fast, and accurate Malayalam typing online. Practice Malayalam typing with structured lessons, an interactive Malayalam keyboard layout reference, and real-time typing speed tests.",
         creator: "@zoxilsi",
     },
     robots: {
@@ -89,7 +108,7 @@ export default function RootLayout({
                             script.src = "https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js";
                             script.setAttribute("data-name", "BMC-Widget");
                             script.setAttribute("data-cfasync", "false");
-                            script.setAttribute("data-id", "hizoxilsij");
+                            script.setAttribute("data-id", "nihalt");
                             script.setAttribute("data-description", "Support MalluTyping");
                             script.setAttribute("data-message", "");
                             script.setAttribute("data-color", "#B3F023");

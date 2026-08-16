@@ -118,7 +118,7 @@ export default function LearningExperience() {
                         </p>
                         <div className="mt-3 h-3 overflow-hidden rounded-full bg-white">
                             <div
-                                className="h-full rounded-full bg-[#c7f43e]"
+                                className="h-full rounded-full bg-[#c084fc]"
                                 style={{ width: `${progressPercent}%` }}
                             />
                         </div>

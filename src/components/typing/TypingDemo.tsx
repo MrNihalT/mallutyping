@@ -552,7 +552,7 @@ export default function TypingDemo({
                             playKeySound("Enter");
                             handleRestart();
                         }}
-                        className="rounded-full border-2 border-black bg-[#edf9fb] px-3 py-1 shadow-[1.5px_1.5px_0px_black] hover:bg-[#c7f43e] active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer"
+                        className="rounded-full border-2 border-black bg-[#edf9fb] px-3 py-1 shadow-[1.5px_1.5px_0px_black] hover:bg-[#c084fc] hover:text-black active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer"
                     >
                         Restart
                     </button>
@@ -572,7 +572,7 @@ export default function TypingDemo({
                             }
                         }}
                         className={`rounded-full border-2 border-black px-3 py-1 shadow-[1.5px_1.5px_0px_black] hover:bg-slate-100 active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer ${
-                            localSoundEnabled ? "bg-[#c7f43e]" : "bg-red-100 text-red-700"
+                            localSoundEnabled ? "bg-[#c084fc] text-black" : "bg-red-100 text-red-700"
                         }`}
                     >
                         {localSoundEnabled ? "🔊 Sound: On" : "🔇 Sound: Off"}
@@ -598,7 +598,7 @@ export default function TypingDemo({
                         {hint}
                     </p>
                 </div>
-                <div className="rounded-full bg-[#c7f43e] px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-slate-900">
+                <div className="rounded-full bg-[#c084fc] px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-black">
                     {stage.type}
                 </div>
             </div>
@@ -624,7 +624,7 @@ export default function TypingDemo({
                                         <span
                                             className={`rounded-full px-4 py-1 text-xs font-black uppercase tracking-[0.16em] ${
                                                 isCurrent
-                                                    ? "bg-[#c7f43e] text-slate-900"
+                                                    ? "bg-[#c084fc] text-black"
                                                     : isDone
                                                       ? "bg-white text-slate-500"
                                                       : "bg-white/70 text-slate-400"
@@ -703,7 +703,7 @@ export default function TypingDemo({
                                 setStarted(true);
                                 playKeySound("Enter");
                             }}
-                            className="rounded-full border-[3px] border-black bg-[#c7f43e] px-6 py-2.5 text-base font-black text-slate-900 shadow-[3px_3px_0px_black]"
+                            className="rounded-full border-[3px] border-black bg-[#c084fc] px-6 py-2.5 text-base font-black text-black shadow-[3px_3px_0px_black] hover:bg-[#b070ec] active:translate-y-[1.5px] active:shadow-none transition-all"
                         >
                             Start Lesson
                         </button>
@@ -750,7 +750,7 @@ export default function TypingDemo({
                                         isShiftCode(item.code);
                                     const baseTone =
                                         item.tone === "accent"
-                                            ? "bg-[#c7f43e] text-slate-900 border-[#a4cc26] border-b-[#89aa1b]"
+                                            ? "bg-[#c084fc] text-black border-[#a855f7] border-b-[#8b5cf6]"
                                             : item.tone === "mint"
                                               ? "bg-[#78db9e] text-slate-800 border-[#5cb882] border-b-[#48976b]"
                                               : "bg-white text-slate-700 border-slate-200 border-b-slate-300";
@@ -775,8 +775,8 @@ export default function TypingDemo({
                                             bgClass = "bg-[#ef4444] text-white border-[#991b1b] border-b-[#991b1b]"; // Wrong (Red)
                                         }
                                     } else if (isExpectedMain || isExpectedShift) {
-                                        // Pulse expected keys (suggestions) in bright lime green when not pressed
-                                        bgClass = "bg-[#c7f43e] text-slate-900 border-[#83c60a] border-b-[#659807] animate-[pulse_1.5s_infinite]";
+                                        // Pulse expected keys (suggestions) in bright violet when not pressed
+                                        bgClass = "bg-[#c084fc] text-black border-[#a855f7] border-b-[#8b5cf6] animate-[pulse_1.5s_infinite]";
                                     }
 
                                     return (
@@ -882,7 +882,7 @@ export default function TypingDemo({
                                     hiddenInputRef.current.focus();
                                 }
                             }}
-                            className="w-full rounded-full border-[3px] border-black bg-[#c7f43e] py-3 text-sm font-black text-slate-900 shadow-[3px_3px_0px_black] hover:bg-[#b5e032] active:translate-y-[3px] active:shadow-none transition-all cursor-pointer"
+                            className="w-full rounded-full border-[3px] border-black bg-[#c084fc] py-3 text-sm font-black text-black shadow-[3px_3px_0px_black] hover:bg-[#b070ec] active:translate-y-[3px] active:shadow-none transition-all cursor-pointer"
                         >
                             Continue Anyway
                         </button>

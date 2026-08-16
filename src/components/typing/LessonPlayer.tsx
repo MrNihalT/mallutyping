@@ -209,7 +209,7 @@ export default function LessonPlayer({ lessonId }: { lessonId: number }) {
                     </p>
                     <Link
                         href="/"
-                        className="mt-5 rounded-full border-[3px] border-black bg-[#c7f43e] px-6 py-3 text-sm font-black text-slate-900 shadow-[3px_3px_0px_black]"
+                        className="mt-5 rounded-full border-[3px] border-black bg-[#c084fc] px-6 py-3 text-sm font-black text-black shadow-[3px_3px_0px_black] hover:bg-[#b070ec] active:translate-y-[1.5px] active:shadow-none transition-all"
                     >
                         Open lesson map
                     </Link>

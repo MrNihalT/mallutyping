@@ -26,7 +26,7 @@ export default function KeyboardReference({ compact = false }: { compact?: boole
 
                                     const baseTone =
                                         item.tone === "accent"
-                                            ? "bg-[#c7f43e] text-slate-900 border-[#a4cc26] border-b-[#89aa1b]"
+                                            ? "bg-[#c084fc] text-black border-[#a855f7] border-b-[#8b5cf6]"
                                             : item.tone === "mint"
                                               ? "bg-[#78db9e] text-slate-800 border-[#5cb882] border-b-[#48976b]"
                                               : "bg-white text-slate-700 border-slate-200 border-b-slate-300";

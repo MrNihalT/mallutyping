@@ -833,27 +833,27 @@ export default function PracticeArea() {
                             hiddenInputRef.current.focus();
                         }
                     }}
-                    className={`relative rounded-[2.4rem] border-[3px] border-black bg-[#dff6fb] p-6 shadow-[8px_8px_0px_black] transition-all cursor-text min-h-[300px] flex flex-col justify-between ${
+                    className={`relative rounded-[1.8rem] md:rounded-[2.4rem] border-2 md:border-[3px] border-black bg-[#dff6fb] p-4 md:p-6 shadow-[2px_2px_0px_black] md:shadow-[4px_4px_0px_black] transition-all cursor-text min-h-[260px] md:min-h-[300px] flex flex-col justify-between ${
                         isInputFocused ? "ring-2 ring-purple-600/50" : ""
                     }`}
                 >
                     {/* Real-time stats display */}
-                    <div className="flex items-center justify-between border-b-2 border-black/10 pb-4 mb-4">
-                        <div className="flex items-center gap-4 text-slate-800">
-                            <div className="flex items-center gap-1.5 bg-white border-2 border-black px-3 py-1 rounded-full text-xs font-black shadow-[1.5px_1.5px_0px_black]">
-                                <IconClock size={14} className={timeLeft < 6 && started ? "text-red-500 animate-pulse" : ""} />
+                    <div className="flex items-center justify-between border-b-2 border-black/10 pb-3 md:pb-4 mb-3 md:mb-4">
+                        <div className="flex items-center gap-2 md:gap-4 text-slate-800">
+                            <div className="flex items-center gap-1 bg-white border-2 border-black px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-black shadow-[1.5px_1.5px_0px_black]">
+                                <IconClock size={12} className={`md:w-3.5 md:h-3.5 ${timeLeft < 6 && started ? "text-red-500 animate-pulse" : ""}`} />
                                 <span>{timeLeft}s</span>
                             </div>
-                            <div className="flex items-center gap-1.5 bg-white border-2 border-black px-3 py-1 rounded-full text-xs font-black shadow-[1.5px_1.5px_0px_black]">
-                                <span className="text-slate-500">SPEED:</span>
+                            <div className="flex items-center gap-1 bg-white border-2 border-black px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-black shadow-[1.5px_1.5px_0px_black]">
+                                <span className="text-slate-500 hidden sm:inline">SPEED:</span>
                                 <span>{stats.wpm} WPM</span>
                             </div>
-                            <div className="flex items-center gap-1.5 bg-white border-2 border-black px-3 py-1 rounded-full text-xs font-black shadow-[1.5px_1.5px_0px_black]">
-                                <span className="text-slate-500">ACC:</span>
+                            <div className="flex items-center gap-1 bg-white border-2 border-black px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-black shadow-[1.5px_1.5px_0px_black]">
+                                <span className="text-slate-500 hidden sm:inline">ACC:</span>
                                 <span>{stats.acc}%</span>
                             </div>
                         </div>
-                        <div className="text-[10px] uppercase font-black tracking-widest text-slate-400">
+                        <div className="hidden sm:block text-[10px] uppercase font-black tracking-widest text-slate-400">
                             {started ? "TYPING..." : "READY TO START"}
                         </div>
                     </div>
@@ -871,8 +871,8 @@ export default function PracticeArea() {
 
                     {/* Focus Shield (Monkeytype styling overlay) */}
                     {!isInputFocused && (
-                        <div className="absolute inset-0 bg-white/25 rounded-[2.4rem] backdrop-blur-[2px] flex items-center justify-center z-15 transition-all">
-                            <div className="rounded-[1.2rem] border-[3px] border-black bg-white px-6 py-3 shadow-[4px_4px_0px_black] text-center max-w-sm">
+                        <div className="absolute inset-0 bg-white/25 rounded-[1.8rem] md:rounded-[2.4rem] backdrop-blur-[2px] flex items-center justify-center z-15 transition-all">
+                            <div className="rounded-[1.2rem] border-2 md:border-[3px] border-black bg-white px-4 md:px-6 py-2.5 md:py-3 shadow-[1.5px_1.5px_0px_black] md:shadow-[2px_2px_0px_black] text-center max-w-xs md:max-w-sm">
                                 <IconKeyboard size={28} className="mx-auto text-slate-800 animate-bounce" />
                                 <h3 className="mt-2 text-sm font-black text-slate-900">Click here to focus</h3>
                                 <p className="text-xs font-medium text-slate-500 mt-1">
@@ -885,9 +885,9 @@ export default function PracticeArea() {
                     {/* Word display box */}
                     <div 
                         ref={containerRef}
-                        className="relative flex-1 min-h-[200px] max-h-[50VH] overflow-hidden leading-[2.2] select-none"
+                        className="relative flex-1 min-h-[200px] max-h-[50VH] overflow-hidden leading-[1.8] md:leading-[2.2] select-none"
                     >
-                        <div className="flex flex-wrap gap-x-5 gap-y-6 px-8 py-4 items-center">
+                        <div className="flex flex-wrap gap-x-3 md:gap-x-5 gap-y-4 md:gap-y-6 px-3 md:px-8 py-3 md:py-4 items-center">
                             {words.map((word, wordIdx) => {
                                 const isCurrent = wordIdx === currentWordIndex;
                                 const isPassed = wordIdx < currentWordIndex;
@@ -897,7 +897,7 @@ export default function PracticeArea() {
                                     <div
                                         key={wordIdx}
                                         data-active={isCurrent}
-                                        className={`font-malayalam text-3xl font-semibold relative py-1 rounded transition-all duration-150 flex items-center ${
+                                        className={`font-malayalam text-xl md:text-3xl font-semibold relative py-1 rounded transition-all duration-150 flex items-center ${
                                             isCurrent 
                                                 ? "bg-black/5 ring-1 ring-black/10 px-2 -mx-2 scale-105" 
                                                 : "text-[#bdd0db]"
@@ -931,7 +931,7 @@ export default function PracticeArea() {
                                                     <span key={clusterIdx} className={`${letterColor} transition-colors duration-100 whitespace-pre relative`}>
                                                         {/* Custom Blinking Cursor */}
                                                         {isActive && (
-                                                            <span className="inline-block w-[3px] h-[1.8rem] bg-purple-600 animate-[pulse_0.8s_infinite] absolute -ml-[2px]" />
+                                                            <span className="inline-block w-[2px] md:w-[3px] h-[1.3rem] md:h-[1.8rem] bg-purple-600 animate-[pulse_0.8s_infinite] absolute -ml-[2px]" />
                                                         )}
                                                         {cluster.text}
                                                     </span>
@@ -953,8 +953,8 @@ export default function PracticeArea() {
 
                                         {/* Cursor at the end of the word if user has typed all letters or extra letters */}
                                         {isCurrent && typedVal.length >= word.length && (
-                                            <span className="inline-block w-[3px] h-[1.8rem] bg-purple-600 animate-[pulse_0.8s_infinite] absolute" 
-                                                  style={{ left: `${word.length * 1.05 + (typedVal.length - word.length) * 0.7}rem` }}
+                                            <span className="inline-block w-[2px] md:w-[3px] h-[1.3rem] md:h-[1.8rem] bg-purple-600 animate-[pulse_0.8s_infinite] absolute" 
+                                                  style={{ left: `${word.length * (isMobile ? 0.65 : 1.05) + (typedVal.length - word.length) * (isMobile ? 0.45 : 0.7)}rem` }}
                                             />
                                         )}
                                     </div>

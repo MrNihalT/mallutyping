@@ -22,7 +22,7 @@ export default function SupportWidget() {
             <button
                 type="button"
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-5 right-5 z-40 flex items-center justify-center rounded-full border border-[#db2777]/20 bg-pink-50/90 p-3 shadow-[0_8px_24px_rgba(219,39,119,0.15)] hover:bg-pink-100/90 active:scale-95 transition-all cursor-pointer"
+                className="fixed bottom-5 right-5 z-[9999] flex items-center justify-center rounded-full border border-[#db2777]/20 bg-pink-50/90 p-3 shadow-[0_8px_24px_rgba(219,39,119,0.15)] hover:bg-pink-100/90 active:scale-95 transition-all cursor-pointer"
                 title="Support"
                 aria-label="Support"
             >

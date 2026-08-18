@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
     IconLogin2,
@@ -21,6 +21,42 @@ interface PublicHeaderClientProps {
 
 export default function PublicHeaderClient({ user }: PublicHeaderClientProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const drawerRef = useRef<HTMLDivElement | null>(null);
+    const menuButtonRef = useRef<HTMLButtonElement | null>(null);
+
+    useEffect(() => {
+        if (!isMenuOpen) return;
+
+        const handleOutsideClick = (event: MouseEvent | TouchEvent) => {
+            if (
+                drawerRef.current &&
+                !drawerRef.current.contains(event.target as Node) &&
+                menuButtonRef.current &&
+                !menuButtonRef.current.contains(event.target as Node)
+            ) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleOutsideClick);
+        document.addEventListener("touchstart", handleOutsideClick);
+
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+            document.removeEventListener("touchstart", handleOutsideClick);
+        };
+    }, [isMenuOpen]);
+
+    useEffect(() => {
+        if (isMenuOpen) {
+            document.body.classList.add("overflow-hidden");
+        } else {
+            document.body.classList.remove("overflow-hidden");
+        }
+        return () => {
+            document.body.classList.remove("overflow-hidden");
+        };
+    }, [isMenuOpen]);
 
     return (
         <>
@@ -118,8 +154,9 @@ export default function PublicHeaderClient({ user }: PublicHeaderClientProps) {
                     </Link>
 
                     <button
+                        ref={menuButtonRef}
                         type="button"
-                        onClick={() => setIsMenuOpen(true)}
+                        onClick={() => setIsMenuOpen((prev) => !prev)}
                         className="flex items-center justify-center rounded-full border border-slate-900/10 bg-white/60 p-2.5 text-slate-800 shadow-sm hover:bg-white active:scale-95 transition-all cursor-pointer"
                         aria-label="Open Menu"
                     >
@@ -129,116 +166,113 @@ export default function PublicHeaderClient({ user }: PublicHeaderClientProps) {
             </header>
 
             {/* Mobile Drawer Overlay */}
-            {isMenuOpen && (
-                <div
-                    className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity"
-                    onClick={() => setIsMenuOpen(false)}
-                />
-            )}
+            <div
+                className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-all duration-300 ease-in-out md:hidden ${
+                    isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+            />
 
             {/* Mobile Side Drawer Panel */}
             <div
-                className={`fixed top-0 right-0 h-full w-[280px] bg-white border-l-[3px] border-black shadow-[-8px_0px_0px_black] z-50 p-6 flex flex-col justify-between transition-transform duration-300 ease-in-out ${
-                    isMenuOpen ? "translate-x-0" : "translate-x-full"
+                ref={drawerRef}
+                className={`fixed top-0 right-0 h-screen w-[280px] bg-white border-l-[3px] border-black shadow-[-8px_0px_0px_black] z-50 p-5 flex flex-col transition-all duration-300 ease-in-out md:hidden overflow-y-auto ${
+                    isMenuOpen ? "translate-x-0 visible opacity-100" : "translate-x-full invisible opacity-0 pointer-events-none"
                 }`}
             >
-                <div>
-                    {/* Drawer Header */}
-                    <div className="flex items-center justify-between border-b-2 border-black/10 pb-4">
-                        <div className="flex items-center gap-2">
-                            <div className="rounded-[6px] border-2 border-black bg-lime-300 px-2 py-0.5 font-bold shadow-[1.5px_1.5px_0px_black] text-black font-malayalam text-sm">
-                                മ
-                            </div>
-                            <span className="font-black text-slate-900 text-sm">MalluTyping</span>
+                {/* Drawer Header */}
+                <div className="flex items-center justify-between border-b-2 border-black/10 pb-3">
+                    <div className="flex items-center gap-2">
+                        <div className="rounded-[6px] border-2 border-black bg-lime-300 px-2 py-0.5 font-bold shadow-[1.5px_1.5px_0px_black] text-black font-malayalam text-sm">
+                            മ
                         </div>
-                        <button
-                            type="button"
-                            onClick={() => setIsMenuOpen(false)}
-                            className="rounded-full border-2 border-black bg-slate-100 p-1 text-slate-800 shadow-[1.5px_1.5px_0px_black] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
-                            aria-label="Close Menu"
-                        >
-                            <IconX size={14} />
-                        </button>
+                        <span className="font-black text-slate-900 text-sm">MalluTyping</span>
                     </div>
-
-                    {/* Drawer Links */}
-                    <div className="flex flex-col gap-4 py-8">
-                        <Link
-                            href="/"
-                            onClick={() => setIsMenuOpen(false)}
-                            className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-white px-4 py-2.5 text-xs font-black shadow-[2px_2px_0px_black] active:translate-y-0.5 active:shadow-none transition-all text-slate-800"
-                        >
-                            Home
-                        </Link>
-
-                        <Link
-                            href="/practice"
-                            onClick={() => setIsMenuOpen(false)}
-                            className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-[#fef08a] px-4 py-2.5 text-xs font-black shadow-[2px_2px_0px_black] active:translate-y-0.5 active:shadow-none transition-all text-slate-900"
-                        >
-                            Practice
-                        </Link>
-
-                        <Link
-                            href="/keyboard"
-                            onClick={() => setIsMenuOpen(false)}
-                            className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-[#eaf9fc] px-4 py-2.5 text-xs font-black shadow-[2px_2px_0px_black] active:translate-y-0.5 active:shadow-none transition-all text-slate-900"
-                        >
-                            Keyboard Layout
-                        </Link>
-
-                        {user ? (
-                            <a
-                                href="/auth/logout"
-                                className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-red-50 text-red-600 px-4 py-2.5 text-xs font-black shadow-[2px_2px_0px_black]"
-                            >
-                                <IconLogout2 size={14} />
-                                Logout
-                            </a>
-                        ) : (
-                            <Link
-                                href="/login?next=/"
-                                onClick={() => setIsMenuOpen(false)}
-                                className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-white px-4 py-2.5 text-xs font-black shadow-[2px_2px_0px_black] text-slate-900"
-                            >
-                                <IconLogin2 size={14} />
-                                Login
-                            </Link>
-                        )}
-                    </div>
+                    <button
+                        type="button"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="rounded-full border-2 border-black bg-slate-100 p-1 text-slate-800 shadow-[1.5px_1.5px_0px_black] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                        aria-label="Close Menu"
+                    >
+                        <IconX size={14} />
+                    </button>
                 </div>
 
-                {/* Drawer Footer socials */}
-                <div className="flex flex-col gap-3 border-t-2 border-black/10 pt-4">
-                    <a
-                        href="https://nihalt.in"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 rounded-full border-2 border-black bg-white px-3 py-1.5 text-[10px] font-black shadow-[1.5px_1.5px_0px_black] text-slate-800"
+                {/* Drawer Links */}
+                <div className="flex flex-col gap-3 py-4">
+                    <Link
+                        href="/"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-white px-4 py-2 text-xs font-black shadow-[2px_2px_0px_black] active:translate-y-0.5 active:shadow-none transition-all text-slate-800"
                     >
-                        <IconGlobe size={12} />
-                        <span>nihalt.in</span>
-                    </a>
+                        Home
+                    </Link>
 
-                    <div className="flex gap-2">
+                    <Link
+                        href="/practice"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-[#fef08a] px-4 py-2 text-xs font-black shadow-[2px_2px_0px_black] active:translate-y-0.5 active:shadow-none transition-all text-slate-900"
+                    >
+                        Practice
+                    </Link>
+
+                    <Link
+                        href="/keyboard"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-[#eaf9fc] px-4 py-2 text-xs font-black shadow-[2px_2px_0px_black] active:translate-y-0.5 active:shadow-none transition-all text-slate-900"
+                    >
+                        Keyboard Layout
+                    </Link>
+
+                    {user ? (
+                        <a
+                            href="/auth/logout"
+                            className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-red-50 text-red-600 px-4 py-2 text-xs font-black shadow-[2px_2px_0px_black]"
+                        >
+                            <IconLogout2 size={14} />
+                            Logout
+                        </a>
+                    ) : (
+                        <Link
+                            href="/login?next=/"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-white px-4 py-2 text-xs font-black shadow-[2px_2px_0px_black] text-slate-900"
+                        >
+                            <IconLogin2 size={14} />
+                            Login
+                        </Link>
+                    )}
+
+                    {/* Drawer Socials - Single Row directly below Login/Logout */}
+                    <div className="border-t-2 border-black/10 pt-4 mt-1 flex justify-center gap-3">
+                        <a
+                            href="https://nihalt.in"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center rounded-full border-2 border-black bg-white p-2.5 text-slate-800 shadow-[2px_2px_0px_black] hover:bg-slate-50 active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                            title="nihalt.in"
+                        >
+                            <IconGlobe size={18} />
+                        </a>
+
                         <a
                             href="https://instagram.com/_nihaal_t"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 flex items-center justify-center gap-1 rounded-full border-2 border-black bg-[#fdf2f8] py-1.5 text-[10px] font-black text-[#db2777] shadow-[1.5px_1.5px_0px_black]"
+                            className="flex items-center justify-center rounded-full border-2 border-black bg-[#fdf2f8] p-2.5 text-[#db2777] shadow-[2px_2px_0px_black] hover:bg-pink-100/50 active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                            title="Instagram"
                         >
-                            <IconBrandInstagram size={12} />
-                            <span>Instagram</span>
+                            <IconBrandInstagram size={18} />
                         </a>
 
                         <a
                             href="https://x.com/_nihaal_t"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 flex items-center justify-center gap-1 rounded-full border-2 border-black bg-slate-900 py-1.5 text-[10px] font-black text-white shadow-[1.5px_1.5px_0px_black]"
+                            className="flex items-center justify-center rounded-full border-2 border-black bg-slate-900 p-2.5 text-white shadow-[2px_2px_0px_black] hover:bg-slate-800 active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                            title="Twitter / X"
                         >
-                            <IconBrandTwitter size={12} />
-                            <span>Twitter / X</span>
+                            <IconBrandTwitter size={18} />
                         </a>
                     </div>
                 </div>

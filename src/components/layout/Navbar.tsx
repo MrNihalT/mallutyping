@@ -49,6 +49,17 @@ export default function Navbar({ user }: { user: NavbarUser | null }) {
         };
     }, [isMenuOpen]);
 
+    useEffect(() => {
+        if (isMenuOpen) {
+            document.body.classList.add("overflow-hidden");
+        } else {
+            document.body.classList.remove("overflow-hidden");
+        }
+        return () => {
+            document.body.classList.remove("overflow-hidden");
+        };
+    }, [isMenuOpen]);
+
     return (
         <>
             <header className="sticky top-4 z-30 mx-auto flex max-w-7xl items-center justify-between gap-4 rounded-full border border-slate-900/10 iphone-glass px-6 py-3.5 shadow-[0_12px_40px_rgba(0,0,0,0.08)] sm:px-8">
@@ -173,117 +184,113 @@ export default function Navbar({ user }: { user: NavbarUser | null }) {
             {/* Mobile Side Drawer Panel */}
             <div
                 ref={drawerRef}
-                className={`fixed top-0 right-0 h-full w-[280px] bg-white border-l-[3px] border-black shadow-[-8px_0px_0px_black] z-50 p-6 flex flex-col justify-between transition-all duration-300 ease-in-out lg:hidden ${
+                className={`fixed top-0 right-0 h-screen w-[280px] bg-white border-l-[3px] border-black shadow-[-8px_0px_0px_black] z-50 p-5 flex flex-col transition-all duration-300 ease-in-out lg:hidden overflow-y-auto ${
                     isMenuOpen ? "translate-x-0 visible opacity-100" : "translate-x-full invisible opacity-0 pointer-events-none"
                 }`}
             >
-                <div>
-                    {/* Drawer Header */}
-                    <div className="flex items-center justify-between border-b-2 border-black/10 pb-4">
-                        <div className="flex items-center gap-2">
-                            <div className="rounded-[6px] border-2 border-black bg-[#c084fc] px-2 py-0.5 font-bold shadow-[1.5px_1.5px_0px_black] text-black font-malayalam text-sm">
-                                മ
-                            </div>
-                            <span className="font-black text-slate-900 text-sm">MalluTyping</span>
+                {/* Drawer Header */}
+                <div className="flex items-center justify-between border-b-2 border-black/10 pb-3">
+                    <div className="flex items-center gap-2">
+                        <div className="rounded-[6px] border-2 border-black bg-[#c084fc] px-2 py-0.5 font-bold shadow-[1.5px_1.5px_0px_black] text-black font-malayalam text-sm">
+                            മ
                         </div>
-                        <button
-                            type="button"
-                            onClick={() => setIsMenuOpen(false)}
-                            className="rounded-full border-2 border-black bg-slate-100 p-1 text-slate-800 shadow-[1.5px_1.5px_0px_black] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
-                            aria-label="Close Menu"
-                        >
-                            <IconX size={14} />
-                        </button>
+                        <span className="font-black text-slate-900 text-sm">MalluTyping</span>
                     </div>
-
-                    {/* Drawer Links */}
-                    <div className="flex flex-col gap-4 py-8">
-                        <Link
-                            href="/"
-                            onClick={() => setIsMenuOpen(false)}
-                            className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-white px-4 py-2.5 text-xs font-black shadow-[2px_2px_0px_black] active:translate-y-0.5 active:shadow-none transition-all text-slate-800"
-                        >
-                            Home
-                        </Link>
-
-                        <Link
-                            href="/practice"
-                            onClick={() => setIsMenuOpen(false)}
-                            className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-[#fef08a] px-4 py-2.5 text-xs font-black shadow-[2px_2px_0px_black] active:translate-y-0.5 active:shadow-none transition-all text-slate-900"
-                        >
-                            Practice
-                        </Link>
-
-                        <Link
-                            href="/keyboard"
-                            onClick={() => setIsMenuOpen(false)}
-                            className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-[#eaf9fc] px-4 py-2.5 text-xs font-black shadow-[2px_2px_0px_black] active:translate-y-0.5 active:shadow-none transition-all text-slate-900"
-                        >
-                            Keyboard Layout
-                        </Link>
-
-                        {user ? (
-                            <a
-                                href="/auth/logout"
-                                className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-red-50 text-red-600 px-4 py-2.5 text-xs font-black shadow-[2px_2px_0px_black]"
-                            >
-                                <IconLogout2 size={14} />
-                                Logout
-                            </a>
-                        ) : (
-                            <>
-                                <Link
-                                    href="/login"
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-white px-4 py-2.5 text-xs font-black shadow-[2px_2px_0px_black] text-slate-900"
-                                >
-                                    <IconLogin2 size={14} />
-                                    Login
-                                </Link>
-                                <Link
-                                    href="/register"
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-[#c084fc] px-4 py-2.5 text-xs font-black shadow-[2px_2px_0px_black] text-slate-900"
-                                >
-                                    <IconUserPlus size={14} />
-                                    Register
-                                </Link>
-                            </>
-                        )}
-                    </div>
+                    <button
+                        type="button"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="rounded-full border-2 border-black bg-slate-100 p-1 text-slate-800 shadow-[1.5px_1.5px_0px_black] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                        aria-label="Close Menu"
+                    >
+                        <IconX size={14} />
+                    </button>
                 </div>
 
-                {/* Drawer Footer socials */}
-                <div className="flex flex-col gap-3 border-t-2 border-black/10 pt-4">
-                    <a
-                        href="https://nihalt.in"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 rounded-full border-2 border-black bg-white px-3 py-1.5 text-[10px] font-black shadow-[1.5px_1.5px_0px_black] text-slate-800"
+                {/* Drawer Links */}
+                <div className="flex flex-col gap-3 py-4">
+                    <Link
+                        href="/"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-white px-4 py-2 text-xs font-black shadow-[2px_2px_0px_black] active:translate-y-0.5 active:shadow-none transition-all text-slate-800"
                     >
-                        <IconGlobe size={12} />
-                        <span>nihalt.in</span>
-                    </a>
+                        Home
+                    </Link>
 
-                    <div className="flex gap-2">
+                    <Link
+                        href="/practice"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-[#fef08a] px-4 py-2 text-xs font-black shadow-[2px_2px_0px_black] active:translate-y-0.5 active:shadow-none transition-all text-slate-900"
+                    >
+                        Practice
+                    </Link>
+
+                    <Link
+                        href="/keyboard"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-[#eaf9fc] px-4 py-2 text-xs font-black shadow-[2px_2px_0px_black] active:translate-y-0.5 active:shadow-none transition-all text-slate-900"
+                    >
+                        Keyboard Layout
+                    </Link>
+
+                    {user ? (
+                        <a
+                            href="/auth/logout"
+                            className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-red-50 text-red-600 px-4 py-2 text-xs font-black shadow-[2px_2px_0px_black]"
+                        >
+                            <IconLogout2 size={14} />
+                            Logout
+                        </a>
+                    ) : (
+                        <>
+                            <Link
+                                href="/login"
+                                onClick={() => setIsMenuOpen(false)}
+                                className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-white px-4 py-2 text-xs font-black shadow-[2px_2px_0px_black] text-slate-900"
+                            >
+                                <IconLogin2 size={14} />
+                                Login
+                            </Link>
+                            <Link
+                                href="/register"
+                                onClick={() => setIsMenuOpen(false)}
+                                className="flex items-center gap-2 rounded-[10px] border-2 border-black bg-[#c084fc] px-4 py-2 text-xs font-black shadow-[2px_2px_0px_black] text-slate-900"
+                            >
+                                <IconUserPlus size={14} />
+                                Register
+                            </Link>
+                        </>
+                    )}
+
+                    {/* Drawer Socials - Single Row directly below Login/Register */}
+                    <div className="border-t-2 border-black/10 pt-4 mt-1 flex justify-center gap-3">
+                        <a
+                            href="https://nihalt.in"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center rounded-full border-2 border-black bg-white p-2.5 text-slate-800 shadow-[2px_2px_0px_black] hover:bg-slate-50 active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                            title="nihalt.in"
+                        >
+                            <IconGlobe size={18} />
+                        </a>
+
                         <a
                             href="https://instagram.com/_nihaal_t"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 flex items-center justify-center gap-1 rounded-full border-2 border-black bg-[#fdf2f8] py-1.5 text-[10px] font-black text-[#db2777] shadow-[1.5px_1.5px_0px_black]"
+                            className="flex items-center justify-center rounded-full border-2 border-black bg-[#fdf2f8] p-2.5 text-[#db2777] shadow-[2px_2px_0px_black] hover:bg-pink-100/50 active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                            title="Instagram"
                         >
-                            <IconBrandInstagram size={12} />
-                            <span>Instagram</span>
+                            <IconBrandInstagram size={18} />
                         </a>
 
                         <a
                             href="https://x.com/_nihaal_t"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 flex items-center justify-center gap-1 rounded-full border-2 border-black bg-slate-900 py-1.5 text-[10px] font-black text-white shadow-[1.5px_1.5px_0px_black]"
+                            className="flex items-center justify-center rounded-full border-2 border-black bg-slate-900 p-2.5 text-white shadow-[2px_2px_0px_black] hover:bg-slate-800 active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                            title="Twitter / X"
                         >
-                            <IconBrandTwitter size={12} />
-                            <span>Twitter / X</span>
+                            <IconBrandTwitter size={18} />
                         </a>
                     </div>
                 </div>

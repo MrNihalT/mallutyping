@@ -3,6 +3,8 @@ import Script from "next/script";
 import { Geist, Geist_Mono, Noto_Sans_Malayalam } from "next/font/google";
 import "./globals.css";
 import SupportWidget from "@/components/ui/SupportWidget";
+import MobileAlert from "@/components/ui/MobileAlert";
+
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -99,6 +101,8 @@ export default function RootLayout({
             <body>
                 {children}
                 <SupportWidget />
+                <MobileAlert />
+
                 <Script
                     id="bmc-widget"
                     strategy="lazyOnload"

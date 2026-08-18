@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
     IconKeyboard,
@@ -23,6 +23,31 @@ type NavbarUser = {
 
 export default function Navbar({ user }: { user: NavbarUser | null }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const drawerRef = useRef<HTMLDivElement | null>(null);
+    const menuButtonRef = useRef<HTMLButtonElement | null>(null);
+
+    useEffect(() => {
+        if (!isMenuOpen) return;
+
+        const handleOutsideClick = (event: MouseEvent | TouchEvent) => {
+            if (
+                drawerRef.current &&
+                !drawerRef.current.contains(event.target as Node) &&
+                menuButtonRef.current &&
+                !menuButtonRef.current.contains(event.target as Node)
+            ) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleOutsideClick);
+        document.addEventListener("touchstart", handleOutsideClick);
+
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+            document.removeEventListener("touchstart", handleOutsideClick);
+        };
+    }, [isMenuOpen]);
 
     return (
         <>
@@ -126,8 +151,9 @@ export default function Navbar({ user }: { user: NavbarUser | null }) {
                     </Link>
 
                     <button
+                        ref={menuButtonRef}
                         type="button"
-                        onClick={() => setIsMenuOpen(true)}
+                        onClick={() => setIsMenuOpen((prev) => !prev)}
                         className="flex items-center justify-center rounded-full border border-slate-900/10 bg-white/60 p-2.5 text-slate-800 shadow-sm hover:bg-white active:scale-95 transition-all cursor-pointer"
                         aria-label="Open Menu"
                     >
@@ -137,17 +163,18 @@ export default function Navbar({ user }: { user: NavbarUser | null }) {
             </header>
 
             {/* Mobile Drawer Overlay */}
-            {isMenuOpen && (
-                <div
-                    className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity"
-                    onClick={() => setIsMenuOpen(false)}
-                />
-            )}
+            <div
+                className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-all duration-300 ease-in-out lg:hidden ${
+                    isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+            />
 
             {/* Mobile Side Drawer Panel */}
             <div
-                className={`fixed top-0 right-0 h-full w-[280px] bg-white border-l-[3px] border-black shadow-[-8px_0px_0px_black] z-50 p-6 flex flex-col justify-between transition-transform duration-300 ease-in-out ${
-                    isMenuOpen ? "translate-x-0" : "translate-x-full"
+                ref={drawerRef}
+                className={`fixed top-0 right-0 h-full w-[280px] bg-white border-l-[3px] border-black shadow-[-8px_0px_0px_black] z-50 p-6 flex flex-col justify-between transition-all duration-300 ease-in-out lg:hidden ${
+                    isMenuOpen ? "translate-x-0 visible opacity-100" : "translate-x-full invisible opacity-0 pointer-events-none"
                 }`}
             >
                 <div>

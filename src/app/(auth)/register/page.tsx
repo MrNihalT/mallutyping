@@ -97,10 +97,6 @@ export default function RegisterPage() {
 
         setSuccess("Account created. Please check your email to confirm your account.");
         setLoading(false);
-
-        window.setTimeout(() => {
-            router.push("/login");
-        }, 1200);
     }
 
     return (
@@ -257,6 +253,36 @@ export default function RegisterPage() {
                     .
                 </p>
             </div>
+
+            {/* Email Confirmation Modal */}
+            {success && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm animate-fade-in">
+                    <div className="relative max-w-md w-full rounded-[2rem] border border-slate-900/10 bg-white/95 p-8 text-center shadow-[0_20px_50px_rgba(0,0,0,0.12)] animate-scale-in">
+                        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-lime-100 text-lime-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                            </svg>
+                        </div>
+                        <h2 className="text-2xl font-black text-slate-900 font-sans">Confirm your email</h2>
+                        <p className="mt-3 text-sm font-semibold text-slate-600">
+                            We have sent a verification link to:
+                        </p>
+                        <p className="mt-1 font-bold text-slate-950 select-all">{email}</p>
+                        <p className="mt-4 text-xs text-slate-500 leading-relaxed">
+                            Please click the confirmation link inside the email to activate and verify your account.
+                        </p>
+                        <div className="mt-6">
+                            <button
+                                type="button"
+                                onClick={() => router.push("/login")}
+                                className="w-full rounded-full border border-slate-900/10 bg-[#b3f023] py-2.5 text-sm font-black text-slate-900 shadow-sm hover:bg-[#a2de1b] active:scale-95 transition-all cursor-pointer"
+                            >
+                                Go to Login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

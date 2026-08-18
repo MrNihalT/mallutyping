@@ -13,7 +13,7 @@ import {
 } from "@tabler/icons-react";
 import { malayalamKeyMap, keyboardRows } from "@/lib/keyboard/malayalam";
 
-const MALAYALAM_WORDS = [
+const MALAYALAM_SENTENCES = [
     "കേരളം മനോഹരമായ നാടാണ്",
     "മലയാളം നമ്മുടെ സ്വന്തം ഭാഷയാണ്",
     "കേരളത്തിന്റെ പ്രകൃതി എല്ലാവരെയും ആകർഷിക്കുന്നു",
@@ -280,7 +280,7 @@ const MALAYALAM_WORDS = [
     "നല്ലൊരു വാക്ക് ഒരാളുടെ ദിവസം മാറ്റിയേക്കാം",
 ];
 
-const allPracticeWords = MALAYALAM_WORDS.flatMap((sentence) => sentence.split(/\s+/));
+const allPracticeWords = MALAYALAM_SENTENCES.flatMap((sentence) => sentence.split(/\s+/));
 
 function getGraphemeClusters(text: string) {
     if (typeof Intl !== "undefined" && Intl.Segmenter) {
@@ -478,7 +478,12 @@ export default function PracticeArea() {
     // Initial word generation
     useEffect(() => {
         window.setTimeout(() => {
-            setWords(shuffle(allPracticeWords).slice(0, 150));
+            const initialSentences = [];
+            for (let i = 0; i < 15; i++) {
+                const s = MALAYALAM_SENTENCES[Math.floor(Math.random() * MALAYALAM_SENTENCES.length)];
+                initialSentences.push(s);
+            }
+            setWords(initialSentences.join(" ").split(/\s+/));
         }, 0);
     }, []);
 
@@ -633,7 +638,12 @@ export default function PracticeArea() {
     }, [finished, isSignedIn, username, fetchLeaderboard]);
 
     const handleRestart = useCallback(() => {
-        setWords(shuffle(allPracticeWords).slice(0, 150));
+        const initialSentences = [];
+        for (let i = 0; i < 15; i++) {
+            const s = MALAYALAM_SENTENCES[Math.floor(Math.random() * MALAYALAM_SENTENCES.length)];
+            initialSentences.push(s);
+        }
+        setWords(initialSentences.join(" ").split(/\s+/));
         setCurrentWordIndex(0);
         setTypedChars("");
         setHistory([]);
@@ -667,9 +677,15 @@ export default function PracticeArea() {
         if (code === "Space") {
             playKeySound("Space");
             if (typedChars.length > 0) {
-                // If we are reaching near the end of pre-loaded words, load more
+                // If we are getting near the end of loaded sentences, append more random sentences!
                 if (currentWordIndex >= words.length - 15) {
-                    setWords((prev) => [...prev, ...shuffle(allPracticeWords).slice(0, 50)]);
+                    const extraSentences = [];
+                    for (let i = 0; i < 10; i++) {
+                        const s = MALAYALAM_SENTENCES[Math.floor(Math.random() * MALAYALAM_SENTENCES.length)];
+                        extraSentences.push(s);
+                    }
+                    const newWords = extraSentences.join(" ").split(/\s+/);
+                    setWords((prev) => [...prev, ...newWords]);
                 }
                 setHistory((prev) => [...prev, typedChars]);
                 setCurrentWordIndex((prev) => prev + 1);

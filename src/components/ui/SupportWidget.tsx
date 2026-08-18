@@ -22,7 +22,7 @@ export default function SupportWidget() {
             <button
                 type="button"
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-5 right-5 z-40 flex items-center justify-center rounded-full border-2 border-black bg-[#c084fc] p-3 shadow-[3px_3px_0px_black] hover:bg-[#b070ec] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
+                className="fixed bottom-5 right-5 z-40 flex items-center justify-center rounded-full border border-[#db2777]/20 bg-pink-50/90 p-3 shadow-[0_8px_24px_rgba(219,39,119,0.15)] hover:bg-pink-100/90 active:scale-95 transition-all cursor-pointer"
                 title="Support"
                 aria-label="Support"
             >
@@ -31,15 +31,15 @@ export default function SupportWidget() {
 
             {/* Modal Overlay */}
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out]">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm animate-fade-in">
                     {/* Modal Content Box */}
-                    <div className="relative max-w-lg w-full rounded-[2rem] border-[3px] border-black bg-[#eaf9fc] p-6 shadow-[8px_8px_0px_black]">
+                    <div className="relative max-w-lg w-full rounded-[2rem] border border-slate-900/10 bg-white/95 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] animate-scale-in">
                         
                         {/* Close button */}
                         <button
                             type="button"
                             onClick={() => setIsOpen(false)}
-                            className="absolute right-4 top-4 rounded-full border-2 border-black bg-white p-1.5 text-slate-900 shadow-[1.5px_1.5px_0px_black] hover:bg-slate-100 active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer"
+                            className="absolute right-4 top-4 rounded-full border border-slate-900/10 bg-white/80 p-1.5 text-slate-900 shadow-sm hover:bg-white active:scale-95 transition-all cursor-pointer"
                         >
                             <IconX size={18} />
                         </button>
@@ -61,7 +61,7 @@ export default function SupportWidget() {
                                 href="https://buymeacoffee.com/nihalt"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex flex-col items-center rounded-2xl border-2 border-black bg-white p-4 shadow-[3px_3px_0px_black] hover:bg-slate-50 transition-all cursor-pointer group"
+                                className="flex flex-col items-center rounded-2xl border border-slate-900/10 bg-white/60 p-4 shadow-sm hover:bg-white transition-all cursor-pointer group animate-pop-in-card-1"
                             >
                                 <span className="text-xs font-black uppercase tracking-wider text-slate-500 mb-3 group-hover:text-amber-500 transition-colors">
                                     Buy Me a Coffee
@@ -81,7 +81,7 @@ export default function SupportWidget() {
                             </a>
 
                             {/* UPI / GPay QR */}
-                            <div className="flex flex-col items-center rounded-2xl border-2 border-black bg-white p-4 shadow-[3px_3px_0px_black]">
+                            <div className="flex flex-col items-center rounded-2xl border border-slate-900/10 bg-white/60 p-4 shadow-sm animate-pop-in-card-2">
                                 <span className="text-xs font-black uppercase tracking-wider text-slate-500 mb-3">
                                     GPay / UPI Payment
                                 </span>
@@ -125,7 +125,7 @@ export default function SupportWidget() {
                             <button
                                 type="button"
                                 onClick={() => setIsOpen(false)}
-                                className="rounded-full border-2 border-black bg-[#c084fc] px-6 py-2 text-sm font-black text-black shadow-[2px_2px_0px_black] hover:bg-[#b070ec] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
+                                className="rounded-full border border-slate-900/10 bg-yellow-300/80 px-6 py-2.5 text-sm font-black text-black shadow-sm hover:bg-yellow-300 active:scale-95 transition-all cursor-pointer"
                             >
                                 Done
                             </button>

@@ -26,9 +26,9 @@ export default function Navbar({ user }: { user: NavbarUser | null }) {
 
     return (
         <>
-            <header className="sticky top-4 z-30 mx-auto flex max-w-7xl items-center justify-between gap-4 rounded-[2rem] border-[3px] border-black iphone-glass px-5 py-4 shadow-[6px_6px_0px_black] sm:px-6">
+            <header className="sticky top-4 z-30 mx-auto flex max-w-7xl items-center justify-between gap-4 rounded-full border border-slate-900/10 iphone-glass px-6 py-3.5 shadow-[0_12px_40px_rgba(0,0,0,0.08)] sm:px-8">
                 <Link href="/" className="flex items-center gap-3">
-                    <div className="rounded-[10px] border-2 border-black bg-[#c084fc] px-3.5 py-1.5 font-bold shadow-[2.5px_2.5px_0px_black] text-black flex items-center justify-center font-malayalam text-2xl md:text-3xl leading-none select-none">
+                    <div className="rounded-full border border-purple-500/30 bg-[#c084fc]/85 w-12 h-12 font-bold shadow-sm text-black flex items-center justify-center font-malayalam text-2xl md:text-3xl leading-none select-none">
                         മ
                     </div>
 
@@ -38,109 +38,100 @@ export default function Navbar({ user }: { user: NavbarUser | null }) {
                 </Link>
 
                 {/* Desktop Navigation Links */}
-                <div className="hidden lg:flex items-center gap-4">
-                    <div className="flex gap-2">
-                        <Link
-                            href="/practice"
-                            data-chip="true"
-                            className="rounded-full border-2 border-black bg-[#fef08a] px-4 py-2 text-sm font-bold shadow-[3px_3px_0px_black] hover:bg-yellow-200 transition-colors"
-                        >
-                            <span className="flex items-center gap-2">
-                                <IconBarbell size={16} />
-                                Practice
-                            </span>
-                        </Link>
+                <div className="hidden lg:flex items-center gap-2">
+                    <Link
+                        href="/practice"
+                        className="flex items-center justify-center rounded-full border border-yellow-500/20 bg-yellow-300/60 p-2.5 text-slate-900 shadow-sm hover:bg-yellow-300 active:scale-95 transition-all cursor-pointer"
+                        title="Practice"
+                    >
+                        <IconBarbell size={18} />
+                    </Link>
 
-                        <Link
-                            href="/keyboard"
-                            data-chip="true"
-                            className="rounded-full border-2 border-black bg-[#eaf9fc] px-4 py-2 text-sm font-bold shadow-[3px_3px_0px_black] hover:bg-cyan-100 transition-colors"
-                        >
-                            <span className="flex items-center gap-2">
-                                <IconKeyboard size={16} />
-                                Keyboard
-                            </span>
-                        </Link>
-                    </div>
+                    <Link
+                        href="/keyboard"
+                        className="flex items-center justify-center rounded-full border border-cyan-500/20 bg-cyan-200/40 p-2.5 text-slate-900 shadow-sm hover:bg-cyan-200/60 active:scale-95 transition-all cursor-pointer"
+                        title="Keyboard Layout Reference"
+                    >
+                        <IconKeyboard size={18} />
+                    </Link>
 
-                    <div className="flex items-center gap-3">
-                        {/* Social Links */}
+                    {/* Social Links */}
+                    <a
+                        href="https://nihalt.in"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center rounded-full border border-slate-900/10 bg-white/60 p-2.5 text-slate-800 shadow-sm hover:bg-white active:scale-95 transition-all cursor-pointer"
+                        title="nihalt.in"
+                    >
+                        <IconGlobe size={18} />
+                    </a>
+
+                    <a
+                        href="https://instagram.com/_nihaal_t"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center rounded-full border border-[#db2777]/20 bg-pink-50/60 p-2.5 text-[#db2777] shadow-sm hover:bg-pink-100/80 active:scale-95 transition-all cursor-pointer"
+                        title="Instagram"
+                    >
+                        <IconBrandInstagram size={18} />
+                    </a>
+
+                    <a
+                        href="https://x.com/_nihaal_t"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center rounded-full border border-slate-900/20 bg-slate-900/10 p-2.5 text-white shadow-sm hover:bg-slate-900/20 active:scale-95 transition-all cursor-pointer"
+                        title="Twitter / X"
+                    >
+                        <IconBrandTwitter size={18} />
+                    </a>
+
+                    {user ? (
                         <a
-                            href="https://nihalt.in"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-3 py-1.5 text-xs font-black shadow-[2px_2px_0px_black] hover:bg-slate-50 active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer text-slate-800"
+                            href="/auth/logout"
+                            className="flex items-center justify-center rounded-full border border-slate-900/10 bg-white/60 p-2.5 text-slate-900 shadow-sm hover:bg-white active:scale-95 transition-all cursor-pointer"
+                            title="Logout"
                         >
-                            <IconGlobe size={14} />
-                            <span>nihalt.in</span>
+                            <IconLogout2 size={18} />
                         </a>
-
-                        <a
-                            href="https://instagram.com/_nihaal_t"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-center rounded-full border-2 border-black bg-[#fdf2f8] p-2 text-[#db2777] shadow-[2px_2px_0px_black] hover:bg-pink-100 active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer"
-                            title="Instagram"
-                        >
-                            <IconBrandInstagram size={16} />
-                        </a>
-
-                        <a
-                            href="https://x.com/_nihaal_t"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-center rounded-full border-2 border-black bg-slate-900 p-2 text-white shadow-[2px_2px_0px_black] hover:bg-slate-800 active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer"
-                            title="Twitter / X"
-                        >
-                            <IconBrandTwitter size={16} />
-                        </a>
-
-                        {user ? (
-                            <a
-                                href="/auth/logout"
-                                className="flex items-center gap-2 rounded-full border-2 border-black bg-white px-5 py-3 shadow-[3px_3px_0px_black] active:translate-x-1 active:translate-y-1 active:shadow-none text-sm font-bold"
+                    ) : (
+                        <>
+                            <Link
+                                href="/login"
+                                className="flex items-center justify-center rounded-full border border-slate-900/10 bg-white/60 p-2.5 text-slate-900 shadow-sm hover:bg-white active:scale-95 transition-all cursor-pointer"
+                                title="Login"
                             >
-                                <IconLogout2 size={20} />
-                                Logout
-                            </a>
-                        ) : (
-                            <>
-                                <Link
-                                    href="/login"
-                                    className="flex items-center gap-2 rounded-full border-2 border-black bg-white px-5 py-3 shadow-[3px_3px_0px_black] active:translate-x-1 active:translate-y-1 active:shadow-none text-sm font-bold"
-                                >
-                                    <IconLogin2 size={20} />
-                                    Login
-                                </Link>
+                                <IconLogin2 size={18} />
+                            </Link>
 
-                                <Link
-                                    href="/register"
-                                    className="flex items-center gap-2 rounded-full border-2 border-black bg-[#c084fc] px-5 py-3 shadow-[3px_3px_0px_black] active:translate-x-1 active:translate-y-1 active:shadow-none text-sm font-bold"
-                                >
-                                    <IconUserPlus size={20} />
-                                    Register
-                                </Link>
-                            </>
-                        )}
-                    </div>
+                            <Link
+                                href="/register"
+                                className="flex items-center justify-center rounded-full border border-[#c084fc]/30 bg-[#c084fc]/50 p-2.5 text-slate-900 shadow-sm hover:bg-[#c084fc]/70 active:scale-95 transition-all cursor-pointer"
+                                title="Register"
+                            >
+                                <IconUserPlus size={18} />
+                            </Link>
+                        </>
+                    )}
                 </div>
 
                 {/* Mobile Navigation Controls */}
                 <div className="flex lg:hidden items-center gap-2">
                     <Link
                         href="/practice"
-                        className="rounded-full border-2 border-black bg-[#fef08a] px-3.5 py-1.5 text-xs font-bold shadow-[2px_2px_0px_black] hover:bg-yellow-200 transition-colors"
+                        className="flex items-center justify-center rounded-full border border-yellow-500/20 bg-yellow-300/60 p-2.5 text-slate-900 shadow-sm hover:bg-yellow-300 active:scale-95 transition-all cursor-pointer"
+                        title="Practice"
                     >
-                        Practice
+                        <IconBarbell size={18} />
                     </Link>
 
                     <button
                         type="button"
                         onClick={() => setIsMenuOpen(true)}
-                        className="rounded-full border-2 border-black bg-white p-2 text-slate-800 shadow-[1.5px_1.5px_0px_black] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                        className="flex items-center justify-center rounded-full border border-slate-900/10 bg-white/60 p-2.5 text-slate-800 shadow-sm hover:bg-white active:scale-95 transition-all cursor-pointer"
                         aria-label="Open Menu"
                     >
-                        <IconMenu2 size={16} />
+                        <IconMenu2 size={18} />
                     </button>
                 </div>
             </header>

@@ -10,6 +10,8 @@ import {
     IconBrandTwitter,
     IconMenu2,
     IconX,
+    IconKeyboard,
+    IconBarbell,
 } from "@tabler/icons-react";
 import type { User } from "@supabase/supabase-js";
 
@@ -22,9 +24,9 @@ export default function PublicHeaderClient({ user }: PublicHeaderClientProps) {
 
     return (
         <>
-            <header className="sticky top-4 z-30 mx-auto flex w-full max-w-[1500px] items-center justify-between gap-3 rounded-[1.2rem] border-[3px] border-black iphone-glass px-4 py-1.5 shadow-[4px_4px_0px_black] sm:px-6">
+            <header className="sticky top-4 z-30 mx-auto flex w-full max-w-[1500px] items-center justify-between gap-3 rounded-full border border-slate-900/10 iphone-glass px-5 py-2 shadow-[0_12px_40px_rgba(0,0,0,0.08)] sm:px-8">
                 <Link href="/" className="flex items-center gap-2">
-                    <div className="rounded-[8px] border-2 border-black bg-lime-300 px-3 py-1 font-bold shadow-[2px_2px_0px_black] text-black flex items-center justify-center font-malayalam text-lg md:text-xl leading-none select-none">
+                    <div className="rounded-full border border-lime-500/30 bg-lime-300/85 w-10 h-10 font-bold shadow-sm text-black flex items-center justify-center font-malayalam text-lg md:text-xl leading-none select-none">
                         മ
                     </div>
                     <div>
@@ -44,61 +46,63 @@ export default function PublicHeaderClient({ user }: PublicHeaderClientProps) {
                         href="https://nihalt.in"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1 rounded-full border-2 border-black bg-white px-2.5 py-1 text-[10px] font-black shadow-[1.5px_1.5px_0px_black] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer text-slate-800"
+                        className="flex items-center justify-center rounded-full border border-slate-900/10 bg-white/60 p-2.5 text-slate-800 shadow-sm hover:bg-white active:scale-95 transition-all cursor-pointer"
+                        title="nihalt.in"
                     >
-                        <IconGlobe size={11} />
-                        <span>nihalt.in</span>
+                        <IconGlobe size={21} />
                     </a>
 
                     <a
                         href="https://instagram.com/_nihaal_t"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center rounded-full border-2 border-black bg-[#fdf2f8] p-1.5 text-[#db2777] shadow-[1.5px_1.5px_0px_black] hover:bg-pink-100 active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                        className="flex items-center justify-center rounded-full border border-[#db2777]/20 bg-pink-50/60 p-2.5 text-[#db2777] shadow-sm hover:bg-pink-100/80 active:scale-95 transition-all cursor-pointer"
                         title="Instagram"
                     >
-                        <IconBrandInstagram size={12} />
+                        <IconBrandInstagram size={21} />
                     </a>
 
                     <a
                         href="https://x.com/_nihaal_t"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center rounded-full border-2 border-black bg-slate-900 p-1.5 text-white shadow-[1.5px_1.5px_0px_black] hover:bg-slate-800 active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                        className="flex items-center justify-center rounded-full border border-slate-900/20 bg-slate-900/10 p-2.5 text-slate-800 shadow-sm hover:bg-slate-900/20 active:scale-95 transition-all cursor-pointer"
                         title="Twitter / X"
                     >
-                        <IconBrandTwitter size={12} />
+                        <IconBrandTwitter size={21} />
                     </a>
 
                     <Link
                         href="/practice"
-                        className="rounded-full border-2 border-black bg-[#fef08a] px-3 py-1 text-xs font-black text-slate-900 shadow-[2px_2px_0px_black] hover:bg-yellow-200 transition-colors"
+                        className="flex items-center justify-center rounded-full border border-yellow-500/20 bg-yellow-300/60 p-2.5 text-slate-900 shadow-sm hover:bg-yellow-300 active:scale-95 transition-all cursor-pointer"
+                        title="Practice"
                     >
-                        Practice
+                        <IconBarbell size={21} />
                     </Link>
 
                     <Link
                         href="/keyboard"
-                        className="rounded-full border-2 border-black bg-[#eaf9fc] px-3 py-1 text-xs font-black text-slate-900 shadow-[2px_2px_0px_black] hover:bg-cyan-100 transition-colors"
+                        className="flex items-center justify-center rounded-full border border-cyan-500/20 bg-cyan-200/40 p-2.5 text-slate-900 shadow-sm hover:bg-cyan-200/60 active:scale-95 transition-all cursor-pointer"
+                        title="Keyboard Layout Reference"
                     >
-                        Keyboard
+                        <IconKeyboard size={21} />
                     </Link>
 
                     {user ? (
                         <a
                             href="/auth/logout"
-                            className="inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-3 py-1 text-xs font-black text-slate-900 shadow-[2px_2px_0px_black]"
+                            className="flex items-center justify-center rounded-full border border-slate-900/10 bg-white/60 p-2.5 text-slate-900 shadow-sm hover:bg-white active:scale-95 transition-all cursor-pointer"
+                            title="Logout"
                         >
-                            <IconLogout2 size={14} />
-                            Logout
+                            <IconLogout2 size={21} />
                         </a>
                     ) : (
                         <Link
                             href="/login?next=/"
-                            className="inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-3 py-1 text-xs font-black text-slate-900 shadow-[2px_2px_0px_black]"
+                            className="flex items-center justify-center rounded-full border border-slate-900/10 bg-white/60 p-2.5 text-slate-900 shadow-sm hover:bg-white active:scale-95 transition-all cursor-pointer"
+                            title="Login"
                         >
-                            <IconLogin2 size={14} />
-                            Login
+                            <IconLogin2 size={21} />
                         </Link>
                     )}
                 </div>
@@ -107,18 +111,19 @@ export default function PublicHeaderClient({ user }: PublicHeaderClientProps) {
                 <div className="flex md:hidden items-center gap-2">
                     <Link
                         href="/practice"
-                        className="rounded-full border-2 border-black bg-[#fef08a] px-3 py-1 text-xs font-black text-slate-900 shadow-[2px_2px_0px_black] hover:bg-yellow-200 transition-colors"
+                        className="flex items-center justify-center rounded-full border border-yellow-500/20 bg-yellow-300/60 p-2.5 text-slate-900 shadow-sm hover:bg-yellow-300 active:scale-95 transition-all cursor-pointer"
+                        title="Practice"
                     >
-                        Practice
+                        <IconBarbell size={21} />
                     </Link>
 
                     <button
                         type="button"
                         onClick={() => setIsMenuOpen(true)}
-                        className="rounded-full border-2 border-black bg-white p-1.5 text-slate-800 shadow-[1.5px_1.5px_0px_black] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                        className="flex items-center justify-center rounded-full border border-slate-900/10 bg-white/60 p-2.5 text-slate-800 shadow-sm hover:bg-white active:scale-95 transition-all cursor-pointer"
                         aria-label="Open Menu"
                     >
-                        <IconMenu2 size={14} />
+                        <IconMenu2 size={21} />
                     </button>
                 </div>
             </header>

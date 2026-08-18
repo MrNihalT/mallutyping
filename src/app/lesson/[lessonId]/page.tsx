@@ -40,7 +40,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
     const parsedLessonId = Number(lessonId);
 
     return (
-        <div className="sky-wash paper-grid h-screen overflow-hidden p-4 flex flex-col">
+        <div className="sky-wash paper-grid h-screen overflow-hidden p-4 flex flex-col page-transition">
             <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-3 h-full min-h-0">
                 <PublicHeader />
                 <LessonPlayer lessonId={parsedLessonId} />

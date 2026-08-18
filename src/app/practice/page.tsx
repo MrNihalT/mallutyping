@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function PracticePage() {
     return (
-        <div className="sky-wash paper-grid min-h-screen p-4">
+        <div className="sky-wash paper-grid min-h-screen p-4 page-transition">
             <div className="mx-auto flex max-w-[1500px] flex-col gap-4">
                 <PublicHeader />
                 <PracticeArea />

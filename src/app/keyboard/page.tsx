@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function KeyboardPage() {
     return (
-        <div className="sky-wash paper-grid min-h-screen p-4">
+        <div className="sky-wash paper-grid min-h-screen p-4 page-transition">
             <div className="mx-auto flex max-w-[1500px] flex-col gap-4">
                 <PublicHeader />
                 <section className="rounded-[2.4rem] border-[3px] border-black bg-white/90 p-6 shadow-[8px_8px_0px_black]">

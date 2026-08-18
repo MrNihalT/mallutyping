@@ -913,7 +913,7 @@ export default function PracticeArea() {
                                     <div
                                         key={wordIdx}
                                         data-active={isCurrent}
-                                        className={`font-malayalam text-xl md:text-3xl font-semibold relative py-1 rounded transition-all duration-150 flex items-center ${
+                                        className={`font-malayalam text-base md:text-3xl font-semibold relative py-1 rounded transition-all duration-150 flex items-center ${
                                             isCurrent 
                                                 ? "bg-black/5 ring-1 ring-black/10 px-2 -mx-2 scale-105" 
                                                 : "text-[#bdd0db]"
@@ -942,12 +942,12 @@ export default function PracticeArea() {
                                                         ? "text-red-500 font-black animate-pulse" 
                                                         : "text-purple-600 font-bold";
                                                 }
-
+ 
                                                 return (
                                                     <span key={clusterIdx} className={`${letterColor} transition-colors duration-100 whitespace-pre relative`}>
                                                         {/* Custom Blinking Cursor */}
                                                         {isActive && (
-                                                            <span className="inline-block w-[2px] md:w-[3px] h-[1.3rem] md:h-[1.8rem] bg-purple-600 animate-[pulse_0.8s_infinite] absolute -ml-[2px]" />
+                                                            <span className="inline-block w-[2px] md:w-[3px] h-[1rem] md:h-[1.8rem] bg-purple-600 animate-[pulse_0.8s_infinite] absolute -ml-[2px]" />
                                                         )}
                                                         {cluster.text}
                                                     </span>
@@ -959,18 +959,18 @@ export default function PracticeArea() {
                                                 {word}
                                             </span>
                                         )}
-
+ 
                                         {/* Extra typed letters beyond word length */}
                                         {isCurrent && typedVal.length > word.length && (
                                             <span className="text-red-500 font-bold line-through ml-0.5 whitespace-pre">
                                                 {typedVal.slice(word.length)}
                                             </span>
                                         )}
-
+ 
                                         {/* Cursor at the end of the word if user has typed all letters or extra letters */}
                                         {isCurrent && typedVal.length >= word.length && (
-                                            <span className="inline-block w-[2px] md:w-[3px] h-[1.3rem] md:h-[1.8rem] bg-purple-600 animate-[pulse_0.8s_infinite] absolute" 
-                                                  style={{ left: `${word.length * (isMobile ? 0.65 : 1.05) + (typedVal.length - word.length) * (isMobile ? 0.45 : 0.7)}rem` }}
+                                            <span className="inline-block w-[2px] md:w-[3px] h-[1rem] md:h-[1.8rem] bg-purple-600 animate-[pulse_0.8s_infinite] absolute" 
+                                                  style={{ left: `${word.length * (isMobile ? 0.52 : 1.05) + (typedVal.length - word.length) * (isMobile ? 0.35 : 0.7)}rem` }}
                                             />
                                         )}
                                     </div>

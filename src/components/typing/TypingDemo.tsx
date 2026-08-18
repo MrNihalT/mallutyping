@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { IconReload } from "@tabler/icons-react";
 import { keyboardRows } from "@/lib/keyboard/malayalam";
 import type { TrainerLesson, TrainerPress, TrainerStage } from "@/lib/trainer-lessons";
 
@@ -560,13 +561,15 @@ export default function TypingDemo({
                             playKeySound("Enter");
                             handleRestart();
                         }}
-                        className="rounded-full border-2 border-black bg-white px-3 py-1 shadow-[1.5px_1.5px_0px_black] hover:bg-[#c084fc] hover:text-black active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer"
+                        className="flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-2.5 sm:px-3 py-1 shadow-[1.5px_1.5px_0px_black] hover:bg-[#c084fc] hover:text-black active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer"
+                        title="Restart"
                     >
-                        Restart
+                        <IconReload size={14} stroke={2.5} />
+                        <span className="hidden sm:inline">Restart</span>
                     </button>
                     <Link
                         href="/"
-                        className="rounded-full border-2 border-black bg-white px-3 py-1 shadow-[1.5px_1.5px_0px_black] hover:bg-slate-100 active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer"
+                        className="hidden sm:inline-flex rounded-full border-2 border-black bg-white px-3 py-1 shadow-[1.5px_1.5px_0px_black] hover:bg-slate-100 active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer"
                     >
                         Lessons Map
                     </Link>
@@ -579,13 +582,13 @@ export default function TypingDemo({
                                 playSyntheticClick("Space");
                             }
                         }}
-                        className={`rounded-full border-2 border-black px-3 py-1 shadow-[1.5px_1.5px_0px_black] hover:bg-slate-100 active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer ${
+                        className={`hidden sm:inline-flex rounded-full border-2 border-black px-3 py-1 shadow-[1.5px_1.5px_0px_black] hover:bg-slate-100 active:translate-y-[1.5px] active:shadow-none transition-all cursor-pointer ${
                             localSoundEnabled ? "bg-[#c084fc] text-black" : "bg-red-100 text-red-700"
                         }`}
                     >
                         {localSoundEnabled ? "🔊 Sound: On" : "🔇 Sound: Off"}
                     </button>
-                    <span className="rounded-full border-2 border-black bg-white px-3 py-1 shadow-[1.5px_1.5px_0px_black]">
+                    <span className="hidden sm:inline-block rounded-full border-2 border-black bg-white px-3 py-1 shadow-[1.5px_1.5px_0px_black]">
                         {timeLeft}s
                     </span>
                     <span className="rounded-full border-2 border-black bg-white px-3 py-1 shadow-[1.5px_1.5px_0px_black]">
@@ -602,9 +605,9 @@ export default function TypingDemo({
             {/* Word display box */}
             <div
                 ref={containerRef}
-                className="rounded-[1.5rem] bg-white/45 px-4 py-3 h-[170px] sm:h-[220px] overflow-hidden scroll-smooth relative select-none"
+                className="rounded-[1.5rem] bg-white/45 px-3 sm:px-4 py-3 h-[190px] sm:h-[220px] overflow-hidden scroll-smooth relative select-none"
             >
-                <div className="flex flex-wrap items-end gap-x-5 gap-y-4">
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-3 sm:gap-x-5 gap-y-3 sm:gap-y-4">
                         {stage.units.map((unit, index) => {
                             const isCurrent = index === unitIndex;
                             const isDone = index < unitIndex;
@@ -614,15 +617,15 @@ export default function TypingDemo({
                                 <div
                                     key={`${stage.id}-${unit.text}-${index}`}
                                     data-active={isCurrent}
-                                    className={`flex flex-col items-center gap-2 rounded transition-all duration-150 ${
+                                    className={`flex flex-col items-center gap-1 sm:gap-2 rounded px-2 py-1 border border-transparent transition-all duration-150 ${
                                         isCurrent 
-                                            ? "bg-black/5 ring-1 ring-black/10 px-2 -mx-2 scale-105 py-1" 
+                                            ? "bg-black/5 border-black/10 sm:scale-105" 
                                             : ""
                                     }`}
                                 >
                                     {stage.type === "learn" && !isPracticeOrTest && (
                                         <span
-                                            className={`rounded-full px-4 py-1 text-xs font-black uppercase tracking-[0.16em] ${
+                                            className={`rounded-full px-2.5 sm:px-4 py-0.5 sm:py-1 text-[10px] sm:text-xs font-black uppercase tracking-[0.16em] ${
                                                 isCurrent
                                                     ? "bg-[#c084fc] text-black"
                                                     : isDone
@@ -640,7 +643,7 @@ export default function TypingDemo({
                                         </span>
                                     )}
                                     {isCurrent ? (
-                                        <span className="font-malayalam text-4xl font-semibold leading-none flex">
+                                        <span className="font-malayalam text-lg sm:text-3xl md:text-4xl font-semibold leading-none flex">
                                             {clusters.map((cluster, cIdx) => {
                                                 const isFullyTyped = cluster.endIndex <= pressIndex;
                                                 const isActive = cluster.startIndex <= pressIndex && pressIndex < cluster.endIndex;
@@ -670,7 +673,7 @@ export default function TypingDemo({
                                         </span>
                                     ) : (
                                         <span
-                                            className={`font-malayalam text-4xl font-semibold leading-none ${
+                                            className={`font-malayalam text-lg sm:text-3xl md:text-4xl font-semibold leading-none ${
                                                 isDone ? "text-slate-800 font-bold" : "text-[#bdd0db]"
                                             }`}
                                         >

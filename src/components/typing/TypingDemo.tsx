@@ -531,7 +531,7 @@ export default function TypingDemo({
                     }
                 }
             }}
-            className="relative rounded-[2.4rem] border-[3px] border-black bg-[#dff6fb] p-6 shadow-[8px_8px_0px_black] transition-all cursor-text min-h-[300px] flex flex-col justify-between"
+            className="relative flex-1 rounded-[2.4rem] border-[3px] border-black bg-[#dff6fb] p-4 sm:p-6 shadow-[8px_8px_0px_black] transition-all cursor-text min-h-[300px] flex flex-col justify-between"
         >
             {/* Header / Stats bar */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b-2 border-black/10 pb-4 mb-4 gap-4">
@@ -605,7 +605,7 @@ export default function TypingDemo({
             {/* Word display box */}
             <div
                 ref={containerRef}
-                className="rounded-[1.5rem] bg-white/45 px-3 sm:px-4 py-3 h-[190px] sm:h-[220px] overflow-hidden scroll-smooth relative select-none"
+                className="rounded-[1.5rem] bg-white/45 px-3 sm:px-4 py-3 flex-1 min-h-[190px] sm:min-h-[220px] overflow-hidden scroll-smooth relative select-none"
             >
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-3 sm:gap-x-5 gap-y-3 sm:gap-y-4">
                         {stage.units.map((unit, index) => {

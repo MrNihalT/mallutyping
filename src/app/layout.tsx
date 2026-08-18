@@ -54,9 +54,9 @@ export const metadata: Metadata = {
         "malayalam alphabet keyboard",
         "malayalam typing test online"
     ],
-    authors: [{ name: "Zoxilsi" }],
-    creator: "Zoxilsi",
-    publisher: "Zoxilsi",
+    authors: [{ name: "Nihal T" }],
+    creator: "Nihal T",
+    publisher: "Nihal T",
     openGraph: {
         title: "MalluTyping - Malayalam Typing Practice, Keyboard & Speed Test Online",
         description:
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
         title: "MalluTyping - Malayalam Typing Practice, Keyboard & Speed Test Online",
         description:
             "Easy, fast, and accurate Malayalam typing online. Practice Malayalam typing with structured lessons, an interactive Malayalam keyboard layout reference, and real-time typing speed tests.",
-        creator: "@zoxilsi",
+        creator: "@_nihaal_t",
     },
     robots: {
         index: true,

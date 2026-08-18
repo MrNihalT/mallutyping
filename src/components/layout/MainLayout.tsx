@@ -12,7 +12,7 @@ export default async function MainLayout({
     } = await supabase.auth.getUser();
 
     return (
-        <div className="sky-wash paper-grid relative min-h-screen overflow-hidden">
+        <div className="sky-wash paper-grid relative min-h-screen overflow-x-hidden">
             <Navbar
                 user={
                     user

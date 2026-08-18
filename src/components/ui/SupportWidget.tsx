@@ -22,10 +22,11 @@ export default function SupportWidget() {
             <button
                 type="button"
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full border-2 border-black bg-[#c084fc] px-4 py-2.5 text-sm font-black text-black shadow-[3px_3px_0px_black] hover:bg-[#b070ec] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
+                className="fixed bottom-5 right-5 z-40 flex items-center justify-center rounded-full border-2 border-black bg-[#c084fc] p-3 shadow-[3px_3px_0px_black] hover:bg-[#b070ec] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
+                title="Support"
+                aria-label="Support"
             >
-                <IconHeart size={16} className="fill-red-500 text-red-500" />
-                <span>Support</span>
+                <IconHeart size={20} className="fill-red-500 text-red-500" />
             </button>
 
             {/* Modal Overlay */}

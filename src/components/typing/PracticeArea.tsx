@@ -885,9 +885,9 @@ export default function PracticeArea() {
                     {/* Word display box */}
                     <div 
                         ref={containerRef}
-                        className="relative flex-1 min-h-[120px] max-h-[160px] overflow-hidden leading-relaxed select-none"
+                        className="relative flex-1 min-h-[200px] max-h-[50VH] overflow-hidden leading-[2.2] select-none"
                     >
-                        <div className="flex flex-wrap gap-x-5 gap-y-4 px-8 py-4 items-center">
+                        <div className="flex flex-wrap gap-x-5 gap-y-6 px-8 py-4 items-center">
                             {words.map((word, wordIdx) => {
                                 const isCurrent = wordIdx === currentWordIndex;
                                 const isPassed = wordIdx < currentWordIndex;
@@ -1118,68 +1118,7 @@ export default function PracticeArea() {
                 </div>
             )}
 
-            {/* Virtual Malayalam Keyboard Reference layout at the bottom */}
-            {!finished && (
-                <div className="mt-8 mb-2 hidden md:block overflow-hidden rounded-[1.8rem] border-[4px] border-[#1e222b] bg-[#1e222b] p-2.5 w-full max-w-[820px] mx-auto shadow-[0_10px_20px_rgba(0,0,0,0.2)]">
-                    <div className="space-y-1.5 rounded-[1.2rem] bg-[#2d323f] p-2 w-full flex flex-col border-[2px] border-[#282d39]">
-                        {keyboardRows.map((row, rowIndex) => (
-                            <div key={rowIndex} className="flex gap-1 w-full justify-between">
-                                {row.map((item) => {
-                                    const flexStyle =
-                                        item.code === "Space"
-                                            ? { flex: "6.25 6.25 0%" }
-                                            : item.code === "Backspace"
-                                              ? { flex: "2 2 0%" }
-                                              : item.code === "ShiftLeft" || item.code === "ShiftRight"
-                                                ? { flex: "2.25 2.25 0%" }
-                                                : item.code === "CapsLock"
-                                                  ? { flex: "1.75 1.75 0%" }
-                                                  : item.code === "Tab"
-                                                    ? { flex: "1.5 1.5 0%" }
-                                                    : item.tone === "accent"
-                                                      ? { flex: "1.25 1.25 0%" }
-                                                      : { flex: "1 1 0%" };
-                                    
-                                    const isPressed = pressedKeys.includes(item.code);
-                                    
-                                    // Highlight keyboard keys dynamically based on what the user types
-                                    const baseTone =
-                                        item.tone === "accent"
-                                            ? "bg-[#c084fc] text-black border-[#a855f7] border-b-[#8b5cf6]"
-                                            : item.tone === "mint"
-                                              ? "bg-[#78db9e] text-slate-800 border-[#5cb882] border-b-[#48976b]"
-                                              : "bg-white text-slate-700 border-slate-200 border-b-slate-300";
 
-                                    let bgClass = baseTone;
-                                    if (isPressed) {
-                                        bgClass = "bg-[#22c55e] text-white border-[#166534] border-b-[#166534] scale-95";
-                                    }
-
-                                    return (
-                                        <button
-                                            key={`${rowIndex}-${item.code}`}
-                                            type="button"
-                                            style={flexStyle}
-                                            className={`rounded-lg border-2 border-b-4 text-center select-none font-bold py-1.5 transition-all duration-100 ${bgClass}`}
-                                        >
-                                            <div className="flex flex-col items-center leading-none">
-                                                {/* Shift Malayalam letter */}
-                                                <span className="text-[10px] text-slate-400 font-malayalam h-3.5">
-                                                    {item.shift || ""}
-                                                </span>
-                                                {/* Normal Malayalam letter / character label */}
-                                                <span className="text-sm font-black font-malayalam mt-0.5">
-                                                    {item.normal || item.label}
-                                                </span>
-                                            </div>
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

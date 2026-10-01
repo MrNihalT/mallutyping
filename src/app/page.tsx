@@ -1,9 +1,8 @@
 import PublicHeader from "@/components/layout/PublicHeader";
 import LearningExperience from "@/components/typing/LearningExperience";
 import { Analytics } from "@vercel/analytics/next"
-import {useState} from "react"
 export default function HomePage() {
-    const [name,setName] = useState("")
+    
     return (
         <div className="sky-wash paper-grid min-h-screen p-4 page-transition">
             <div className="mx-auto flex max-w-[1500px] flex-col gap-4">

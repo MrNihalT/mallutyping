@@ -3,9 +3,7 @@ import { NextResponse } from "next/server";
 import { updateSession } from "./lib/supabase/middleware";
 
 export async function middleware(request: NextRequest) {
-    const nihal = "slkdfjsdlkfj"
-    let a;
-    sdfdsf
+    
     const response = await updateSession(request);
     const hasSession =
         request.cookies.get("sb-access-token") ||

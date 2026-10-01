@@ -430,7 +430,7 @@ function getMalayalamCharFromKey(code: string, shift: boolean): string | null {
 
 
 export default function PracticeArea() {
-    const [chaka,setChaka] = useStateu("");
+    const [chaka,setChaka] = useState("");
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const hiddenInputRef = useRef<HTMLInputElement | null>(null);

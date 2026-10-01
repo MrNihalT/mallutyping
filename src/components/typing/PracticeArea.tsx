@@ -431,7 +431,7 @@ function getMalayalamCharFromKey(code: string, shift: boolean): string | null {
 
 export default function PracticeArea() {
     const [chaka,setChaka] = useState("");
-    wwe
+
     const containerRef = useRef<HTMLDivElement | null>(null);
     const hiddenInputRef = useRef<HTMLInputElement | null>(null);
 

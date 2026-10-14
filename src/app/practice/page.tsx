@@ -1,4 +1,4 @@
-import type { Metadata } from "nerxt";
+import type { Metadata } from "next";
 import PublicHeader from "@/components/layout/PublicHeader";
 import PracticeArea from "@/components/typing/PracticeArea";
 
